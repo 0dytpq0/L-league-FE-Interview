@@ -2,8 +2,11 @@
 import Footer from "./_component/Footer";
 import SliderWrapper from "./_component/SliderWrapper";
 import ImageWrapper from "./_component/ImageWrapper";
+import Notice from "./_component/Notice";
 import { SwiperSlide } from "swiper/react";
 import { useState } from "react";
+import Header from "../_component/Header";
+import { NOTICE_MESSAGE } from "@/constants/message";
 
 export default function Main() {
   const tabs = ["전체", "일상생활", "맛집소개", "제품후기", "IT정보"];
@@ -12,32 +15,10 @@ export default function Main() {
   return (
     <div className="relative">
       {/* header */}
-      <header className="flex justify-between mx-4 py-[14px]">
-        <span className="text-brand font-bold text-2xl">BLOG</span>
-        <ImageWrapper
-          src={"/icon_bell.svg"}
-          alt="bell"
-          containerClassName="w-5 h-[22px] relative aspect-auto"
-          objectFit="cover"
-          imageClassName="cursor-pointer"
-        />
-      </header>
+      <Header isMain={true} title="BLOG" />
 
       {/* 공지 */}
-      <div className="flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-[18px]">
-        <div className="flex gap-[2px] items-center border-2 border-brand rounded-2xl py-[5px] px-[8px] bg-white">
-          <ImageWrapper
-            src={"/icon_tip.svg"}
-            alt="tip"
-            containerClassName="relative aspect-auto w-[13px] h-4"
-            objectFit="cover"
-          />
-          <span className="text-brand font-bold text-xs">공지</span>
-        </div>
-        <div className=" text-[11.7px] font-bold">
-          앱 출시 기념 각종 이벤트 진행 예정(공지사항 참고)
-        </div>
-      </div>
+      <Notice message={NOTICE_MESSAGE.main} label="공지" />
 
       {/* 조회수 TOP 10 */}
       <div className="flex items-center gap-1 py-[10px] mx-4">

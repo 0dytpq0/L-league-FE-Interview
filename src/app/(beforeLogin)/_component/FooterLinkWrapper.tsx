@@ -1,12 +1,16 @@
 import ImageWrapper from "./ImageWrapper";
 
-interface Props {
+interface FooterLinkWrapperProps {
   src: string;
   alt: string;
   href: string;
 }
 
-export default function FooterLinkWrapper({ src, alt, href }: Props) {
+export default function FooterLinkWrapper({
+  src,
+  alt,
+  href,
+}: FooterLinkWrapperProps) {
   return (
     <ImageWrapper
       src={src}
