@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,7 +18,7 @@ interface LinkImageProps extends BaseImageProps {
 
 type ImageWrapperProps = LinkImageProps;
 
-export default function ImageWrapper(props: ImageWrapperProps) {
+export default function ImageWrapper({ ...props }: ImageWrapperProps) {
   const {
     src,
     alt,
@@ -28,7 +29,7 @@ export default function ImageWrapper(props: ImageWrapperProps) {
   } = props;
 
   const ImageComponent = (
-    <div className={`${containerClassName}`}>
+    <div className={cn(containerClassName)}>
       <Image
         src={src}
         alt={alt}
@@ -43,7 +44,7 @@ export default function ImageWrapper(props: ImageWrapperProps) {
     return (
       <Link
         href={props.href}
-        className={`cursor-pointer ${props.linkClassName || ""}`}
+        className={cn(`cursor-pointer ${props.linkClassName}`)}
       >
         {ImageComponent}
       </Link>
