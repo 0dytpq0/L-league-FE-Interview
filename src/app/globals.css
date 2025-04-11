@@ -5,6 +5,8 @@
   --breakpoint-tablet: 768px;
   --breakpoint-phone: 390px;
   --breakpoint-desktop: 1024px;
+  --color-brand: #fe8440;
+  --color-input: #f4f4f4;
 }
 @layer base {
   html,
