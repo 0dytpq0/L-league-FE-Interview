@@ -5,17 +5,12 @@
   --breakpoint-tablet: 768px;
   --breakpoint-phone: 390px;
   --breakpoint-desktop: 1024px;
-  --color-brand: #fe8440;
+  --color-brand: #fe9256;
   --color-input: #f4f4f4;
 }
 @layer base {
   html,
   body {
     @apply h-dvh w-dvw max-w-[1024px] mx-auto;
-  }
-
-  #__next,
-  body > div {
-    @apply h-full w-full;
   }
 }

@@ -6,7 +6,7 @@ export default function Login() {
         <div className="flex flex-col w-full gap-1">
           <label
             htmlFor="userId"
-            className="text-[#C5C5C5] text-[15px] rounded-lg"
+            className="text-[#CCCCCC] text-[15px] font-bold"
           >
             아이디
           </label>
@@ -20,7 +20,7 @@ export default function Login() {
         <div className="flex flex-col w-full gap-1">
           <label
             htmlFor="userPassword"
-            className="text-[#C5C5C5] text-[15px] rounded-lg"
+            className="text-[#CCCCCC] text-[15px] font-bold"
           >
             비밀번호
           </label>
