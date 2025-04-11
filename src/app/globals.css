@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+@theme {
+  --shadow-footer: 0px -5px 10px -4px rgb(0, 0, 0, 0.15);
+}
