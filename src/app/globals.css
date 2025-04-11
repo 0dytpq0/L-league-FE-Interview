@@ -2,4 +2,18 @@
 
 @theme {
   --shadow-footer: 0px -5px 10px -4px rgb(0, 0, 0, 0.15);
+  --breakpoint-tablet: 768px;
+  --breakpoint-phone: 390px;
+  --breakpoint-desktop: 1024px;
+}
+@layer base {
+  html,
+  body {
+    @apply h-dvh w-dvw max-w-[1024px] mx-auto;
+  }
+
+  #__next,
+  body > div {
+    @apply h-full w-full;
+  }
 }

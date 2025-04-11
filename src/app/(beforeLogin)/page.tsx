@@ -1,8 +1,8 @@
-import Footer from "../_component/Footer";
+import Footer from "./_component/Footer";
 
 export default function Main() {
   return (
-    <div className="relative h-screen">
+    <div className="relative w-full h-full">
       Main
       <Footer />
     </div>
