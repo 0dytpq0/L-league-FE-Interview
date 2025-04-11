@@ -1,5 +1,4 @@
-import Image from "next/image";
-import Link from "next/link";
+import ImageWrapper from "./ImageWrapper";
 
 interface Props {
   src: string;
@@ -7,13 +6,14 @@ interface Props {
   href: string;
 }
 
-export default function FooterImgFrame({ src, alt, href }: Props) {
+export default function FooterLinkWrapper({ src, alt, href }: Props) {
   return (
-    <Link
+    <ImageWrapper
+      src={src}
+      alt={alt}
       href={href}
-      className="relative aspect-auto w-[22px] h-[27px] cursor-pointer"
-    >
-      <Image src={src} alt={alt} fill className="object-contain" />
-    </Link>
+      containerClassName="relative aspect-auto w-[22px] h-[27px]"
+      objectFit="contain"
+    />
   );
 }

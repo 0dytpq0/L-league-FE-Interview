@@ -1,7 +1,7 @@
 "use client";
-import Image from "next/image";
 import Footer from "./_component/Footer";
 import SliderWrapper from "./_component/SliderWrapper";
+import ImageWrapper from "./_component/ImageWrapper";
 import { SwiperSlide } from "swiper/react";
 import { useState } from "react";
 
@@ -14,27 +14,24 @@ export default function Main() {
       {/* header */}
       <header className="flex justify-between mx-4 py-[14px]">
         <span className="text-brand font-bold text-2xl">BLOG</span>
-        <div className="w-5 h-[22px] relative aspect-auto">
-          <Image
-            src={"/icon_bell.svg"}
-            alt="bell"
-            fill
-            className="object-cover cursor-pointer"
-          />
-        </div>
+        <ImageWrapper
+          src={"/icon_bell.svg"}
+          alt="bell"
+          containerClassName="w-5 h-[22px] relative aspect-auto"
+          objectFit="cover"
+          imageClassName="cursor-pointer"
+        />
       </header>
 
       {/* 공지 */}
       <div className="flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-[18px]">
         <div className="flex gap-[2px] items-center border-2 border-brand rounded-2xl py-[5px] px-[8px] bg-white">
-          <div className="relative aspect-auto w-[13px] h-4">
-            <Image
-              src={"/icon_tip.svg"}
-              alt="tip"
-              fill
-              className="object-cover"
-            />
-          </div>
+          <ImageWrapper
+            src={"/icon_tip.svg"}
+            alt="tip"
+            containerClassName="relative aspect-auto w-[13px] h-4"
+            objectFit="cover"
+          />
           <span className="text-brand font-bold text-xs">공지</span>
         </div>
         <div className=" text-[11.7px] font-bold">
@@ -44,23 +41,19 @@ export default function Main() {
 
       {/* 조회수 TOP 10 */}
       <div className="flex items-center gap-1 py-[10px] mx-4">
-        <div className="relative aspect-auto w-[25px] h-6 mr-1">
-          <Image
-            src={"/icon_rank.svg"}
-            alt="rank"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <ImageWrapper
+          src={"/icon_rank.svg"}
+          alt="rank"
+          containerClassName="relative aspect-auto w-[25px] h-6 mr-1"
+          objectFit="cover"
+        />
         <span className="text-xl font-bold">조회수 TOP 10</span>
-        <div className="relative aspect-auto w-5 h-6 mt-[1px]">
-          <Image
-            src={"/icon_next.svg"}
-            alt="next"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <ImageWrapper
+          src={"/icon_next.svg"}
+          alt="next"
+          containerClassName="relative aspect-auto w-5 h-6 mt-[1px]"
+          objectFit="cover"
+        />
       </div>
       {/* 조회수 슬라이드 */}
       <div className="w-full mx-[14px]">
@@ -102,14 +95,12 @@ export default function Main() {
                 <span className="text-[15.4px] font-bold">
                   블로그 글 타이틀
                 </span>
-                <div className="relative aspect-auto w-1 h-3 mr-1">
-                  <Image
-                    src={"/icon_more.svg"}
-                    alt="more"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <ImageWrapper
+                  src={"/icon_more.svg"}
+                  alt="more"
+                  containerClassName="relative aspect-auto w-1 h-3 mr-1"
+                  objectFit="cover"
+                />
               </div>
               <p className="text-[12.7px] text-[#A8A8A8] font-bold">본문</p>
               <span className="text-[12.7px] text-[#A8A8A8] font-bold">
