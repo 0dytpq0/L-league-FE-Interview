@@ -3,11 +3,11 @@
 import Input from "@/app/(beforeLogin)/_component/Input";
 import Notice from "@/app/(beforeLogin)/_component/Notice";
 import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
-import SelectBox from "@/app/(afterLogin)/_component/CategorySelect";
 import Header from "@/app/_component/Header";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import { useState } from "react";
 import TextArea from "@/app/_component/TextArea";
+import SelectBox from "../_component/SelectBox";
 
 export default function Create() {
   const [mainImage, setMainImage] = useState<File | null>(null);
@@ -90,10 +90,10 @@ export default function Create() {
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={!mainImage || !selectedCategory}
-          className="mt-4 py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          // disabled={!mainImage || !selectedCategory}
+          className="py-4 px-4 bg-brand text-white rounded-lg hover:brightness-95 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
-          등록하기
+          제출
         </button>
       </div>
     </div>
