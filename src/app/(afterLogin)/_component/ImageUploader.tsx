@@ -62,7 +62,7 @@ export default function ImageUploader({
 
   const handleImageClick = () => {
     if (preview) {
-      removePreview();
+      return null;
     } else {
       fileInputRef.current?.click();
     }
@@ -71,8 +71,7 @@ export default function ImageUploader({
   return (
     <div className={`flex flex-col items-center gap-2 ${containerClassName}`}>
       <div
-        onClick={handleImageClick}
-        className="w-full h-[100px] bg-input rounded-lg flex items-center justify-center cursor-pointer overflow-hidden relative"
+        className="w-full h-[100px] bg-input rounded-lg flex items-center justify-center overflow-hidden"
         style={
           preview
             ? {
@@ -91,17 +90,39 @@ export default function ImageUploader({
           className="hidden"
           onChange={handleFileChange}
         />
-        {!preview && (
-          <ImageWrapper
-            src="/icon_plus.svg"
-            alt="plus"
-            containerClassName="w-6 h-6"
-            objectFit="contain"
-          />
+        {!preview ? (
+          <div
+            onClick={handleImageClick}
+            className="w-full h-full flex items-center justify-center cursor-pointer "
+          >
+            <ImageWrapper
+              src="/icon_plus.svg"
+              alt="plus"
+              containerClassName="w-6 h-6"
+              objectFit="contain"
+            />
+          </div>
+        ) : (
+          <div onClick={handleImageClick} className="w-full h-full relative">
+            <div
+              className="absolute top-2 right-2 z-10 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                removePreview();
+              }}
+            >
+              <ImageWrapper
+                src="/icon_close.svg"
+                alt="close"
+                containerClassName="w-4 h-4 bg-transparent rounded-full"
+                objectFit="contain"
+              />
+            </div>
+          </div>
         )}
       </div>
       <div
-        className={`text-gray text-[13.5px] font-bold flex  gap-[5px] ${labelClassName}`}
+        className={`text-gray text-[13.5px] font-bold flex gap-[5px] ${labelClassName}`}
       >
         {label}{" "}
         {required && (
