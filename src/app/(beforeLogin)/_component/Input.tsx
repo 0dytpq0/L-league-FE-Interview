@@ -28,7 +28,7 @@ export default function Input({
       <input
         id={id}
         className={cn(
-          "bg-input py-4 px-[10px] rounded-lg placeholder:text-[#B8B8B8] placeholder:text-sm",
+          "bg-input py-4 px-[10px] rounded-lg text-gray font-bold focus:outline-none placeholder:text-gray placeholder:text-sm placeholder:font-bold",
           inputClassName
         )}
         {...props}

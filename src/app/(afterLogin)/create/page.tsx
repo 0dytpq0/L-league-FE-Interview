@@ -3,6 +3,7 @@
 import Input from "@/app/(beforeLogin)/_component/Input";
 import Notice from "@/app/(beforeLogin)/_component/Notice";
 import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
+import SelectBox from "@/app/(afterLogin)/_component/CategorySelect";
 import Header from "@/app/_component/Header";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import { useState } from "react";
@@ -10,6 +11,8 @@ import { useState } from "react";
 export default function Create() {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [subImage, setSubImage] = useState<File | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const categories = ["일상생활", "맛집소개", "제품후기", "IT정보"];
 
   const handleMainImageChange = (file: File | null) => {
     setMainImage(file);
@@ -19,15 +22,25 @@ export default function Create() {
     setSubImage(file);
   };
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
   const handleSubmit = () => {
     if (!mainImage) {
       alert("대표사진을 선택해주세요.");
       return;
     }
 
+    if (!selectedCategory) {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+
     console.log({
       mainImage,
       subImage,
+      category: selectedCategory,
     });
 
     alert("폼이 제출되었습니다!");
@@ -58,11 +71,13 @@ export default function Create() {
             containerClassName="flex-1"
           />
         </div>
-        <Input
+        <SelectBox
           id="category"
           label="카테고리"
-          placeholder="카테고리 선택"
-          labelClassName="text-black"
+          options={categories}
+          selectedOption={selectedCategory}
+          onChange={handleCategoryChange}
+          required
         />
         <Input
           id="content"
@@ -74,7 +89,7 @@ export default function Create() {
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={!mainImage}
+          disabled={!mainImage || !selectedCategory}
           className="mt-4 py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
           등록하기

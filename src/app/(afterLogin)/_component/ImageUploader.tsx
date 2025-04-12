@@ -100,9 +100,7 @@ export default function ImageUploader({
           />
         )}
       </div>
-      <span
-        className={`text-[#B8B8B8] text-[13.5px] font-bold ${labelClassName}`}
-      >
+      <span className={`text-gray text-[13.5px] font-bold ${labelClassName}`}>
         {label} {required && <span className="text-red-500">*</span>}
       </span>
     </div>
