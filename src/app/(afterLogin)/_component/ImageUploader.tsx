@@ -100,9 +100,14 @@ export default function ImageUploader({
           />
         )}
       </div>
-      <span className={`text-gray text-[13.5px] font-bold ${labelClassName}`}>
-        {label} {required && <span className="text-red-500">*</span>}
-      </span>
+      <div
+        className={`text-gray text-[13.5px] font-bold flex  gap-[5px] ${labelClassName}`}
+      >
+        {label}{" "}
+        {required && (
+          <div className="bg-brand w-[5px] h-[5px] rounded-full mt-1"></div>
+        )}
+      </div>
     </div>
   );
 }

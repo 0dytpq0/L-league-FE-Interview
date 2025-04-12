@@ -21,9 +21,12 @@ export default function TextArea({
     <div className="flex flex-col gap-2">
       <label
         htmlFor={id}
-        className={cn("text-[15px] font-bold", labelClassName)}
+        className={cn("text-[15px] font-bold flex gap-[5px]", labelClassName)}
       >
         {label}
+        {props.required && (
+          <div className="bg-brand w-[5px] h-[5px] rounded-full mt-1"></div>
+        )}
       </label>
       <textarea
         id={id}

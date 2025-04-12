@@ -67,6 +67,7 @@ export default function Create() {
           label="타이틀(30자 이내)"
           placeholder="타이틀을 입력해주세요"
           labelClassName="text-black"
+          required
         />
         <div className="flex gap-[30px]">
           <ImageUploader
@@ -96,6 +97,7 @@ export default function Create() {
           label="내용(10자 이상)"
           placeholder="블로그 글을 작성해주세요"
           labelClassName="text-black"
+          required
         />
         <Checkbox
           label="Blog 이용 정책 위반 시 글 삭제에 동의합니다."

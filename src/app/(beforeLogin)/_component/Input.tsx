@@ -21,9 +21,15 @@ export default function Input({
     <div className={cn("flex flex-col w-full gap-2", containerClassName)}>
       <label
         htmlFor={id}
-        className={cn("text-[#CCCCCC] text-[15px] font-bold", labelClassName)}
+        className={cn(
+          "text-[#CCCCCC] text-[15px] font-bold flex gap-[5px]",
+          labelClassName
+        )}
       >
         {label}
+        {props.required && (
+          <div className="bg-brand w-[5px] h-[5px] rounded-full mt-1"></div>
+        )}
       </label>
       <input
         id={id}

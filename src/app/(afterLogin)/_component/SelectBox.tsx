@@ -44,9 +44,14 @@ export default function SelectBox({
     <div className="flex flex-col gap-1">
       <label
         htmlFor={id}
-        className={cn(`text-black text-[15px] font-bold ${labelClassName}`)}
+        className={cn(
+          `text-black text-[15px] font-bold flex gap-[5px] ${labelClassName}`
+        )}
       >
-        {label} {required && <span className="text-red-500">*</span>}
+        {label}
+        {required && (
+          <div className="bg-brand w-[5px] h-[5px] rounded-full mt-1"></div>
+        )}
       </label>
       <div className="relative">
         <section>
