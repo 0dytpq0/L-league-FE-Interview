@@ -1,9 +1,12 @@
 "use client";
-import Image from "next/image";
 import Footer from "./_component/Footer";
 import SliderWrapper from "./_component/SliderWrapper";
+import Notice from "./_component/Notice";
 import { SwiperSlide } from "swiper/react";
 import { useState } from "react";
+import Header from "../_component/Header";
+import { NOTICE_MESSAGE } from "@/constants/message";
+import ImageWrapper from "../_component/ImageWrapper";
 
 export default function Main() {
   const tabs = ["전체", "일상생활", "맛집소개", "제품후기", "IT정보"];
@@ -12,58 +15,29 @@ export default function Main() {
   return (
     <div className="relative">
       {/* header */}
-      <header className="flex justify-between mx-4 py-[14px]">
-        <span className="text-brand font-bold text-2xl">BLOG</span>
-        <div className="w-5 h-[22px] relative aspect-auto">
-          <Image
-            src={"/icon_bell.svg"}
-            alt="bell"
-            fill
-            className="object-cover cursor-pointer"
-          />
-        </div>
-      </header>
+      <Header isMain={true} title="BLOG" />
 
       {/* 공지 */}
-      <div className="flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-[18px]">
-        <div className="flex gap-[2px] items-center border-2 border-brand rounded-2xl py-[5px] px-[8px] bg-white">
-          <div className="relative aspect-auto w-[13px] h-4">
-            <Image
-              src={"/icon_tip.svg"}
-              alt="tip"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <span className="text-brand font-bold text-xs">공지</span>
-        </div>
-        <div className=" text-[11.7px] font-bold">
-          앱 출시 기념 각종 이벤트 진행 예정(공지사항 참고)
-        </div>
-      </div>
+      <Notice message={NOTICE_MESSAGE.main} label="공지" />
 
       {/* 조회수 TOP 10 */}
-      <div className="flex items-center gap-1 py-[10px] mx-4">
-        <div className="relative aspect-auto w-[25px] h-6 mr-1">
-          <Image
-            src={"/icon_rank.svg"}
-            alt="rank"
-            fill
-            className="object-cover"
-          />
-        </div>
+      <div className="flex items-center gap-1 py-[10px] mx-3">
+        <ImageWrapper
+          src={"/icon_rank.svg"}
+          alt="rank"
+          containerClassName="relative aspect-auto w-[25px] h-6 mr-1"
+          objectFit="cover"
+        />
         <span className="text-xl font-bold">조회수 TOP 10</span>
-        <div className="relative aspect-auto w-5 h-6 mt-[1px]">
-          <Image
-            src={"/icon_next.svg"}
-            alt="next"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <ImageWrapper
+          src={"/icon_next.svg"}
+          alt="next"
+          containerClassName="relative aspect-auto w-5 h-6 mt-[1px]"
+          objectFit="cover"
+        />
       </div>
       {/* 조회수 슬라이드 */}
-      <div className="w-full mx-[14px]">
+      <div className="w-full  mx-3">
         <SliderWrapper>
           {Array.from({ length: 10 }).map((_, index) => (
             <SwiperSlide key={index}>
@@ -91,8 +65,8 @@ export default function Main() {
       </div>
 
       {/* 블로그 글 목록 */}
-      <div className="relative pb-16">
-        <div className="w-full mt-[38px] mx-3 flex flex-col gap-[26px]">
+      <div className="relative pb-16 mx-3">
+        <div className="w-full mt-[38px] flex flex-col gap-[26px]">
           <div className="flex gap-4">
             <div className="bg-blue-500 w-[120px] h-[120px] rounded-lg">
               img
@@ -102,14 +76,12 @@ export default function Main() {
                 <span className="text-[15.4px] font-bold">
                   블로그 글 타이틀
                 </span>
-                <div className="relative aspect-auto w-1 h-3 mr-1">
-                  <Image
-                    src={"/icon_more.svg"}
-                    alt="more"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <ImageWrapper
+                  src={"/icon_more.svg"}
+                  alt="more"
+                  containerClassName="relative aspect-auto w-1 h-3 mr-1"
+                  objectFit="cover"
+                />
               </div>
               <p className="text-[12.7px] text-[#A8A8A8] font-bold">본문</p>
               <span className="text-[12.7px] text-[#A8A8A8] font-bold">
