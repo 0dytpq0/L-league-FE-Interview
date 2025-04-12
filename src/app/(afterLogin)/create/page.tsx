@@ -7,12 +7,14 @@ import Header from "@/app/_component/Header";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import { useState } from "react";
 import TextArea from "@/app/_component/TextArea";
+import Checkbox from "@/app/_component/Checkbox";
 import SelectBox from "../_component/SelectBox";
 
 export default function Create() {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [subImage, setSubImage] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [isAgreed, setIsAgreed] = useState<boolean>(false);
   const categories = ["일상생활", "맛집소개", "제품후기", "IT정보"];
 
   const handleMainImageChange = (file: File | null) => {
@@ -27,6 +29,10 @@ export default function Create() {
     setSelectedCategory(category);
   };
 
+  const handleAgreementChange = (checked: boolean) => {
+    setIsAgreed(checked);
+  };
+
   const handleSubmit = () => {
     if (!mainImage) {
       alert("대표사진을 선택해주세요.");
@@ -35,6 +41,11 @@ export default function Create() {
 
     if (!selectedCategory) {
       alert("카테고리를 선택해주세요.");
+      return;
+    }
+
+    if (!isAgreed) {
+      alert("Blog 이용 정책 동의가 필요합니다.");
       return;
     }
 
@@ -86,11 +97,16 @@ export default function Create() {
           placeholder="블로그 글을 작성해주세요"
           labelClassName="text-black"
         />
-
+        <Checkbox
+          label="Blog 이용 정책 위반 시 글 삭제에 동의합니다."
+          required
+          onChange={handleAgreementChange}
+          className="mt-4 mb-6"
+        />
         <button
           type="button"
           onClick={handleSubmit}
-          // disabled={!mainImage || !selectedCategory}
+          // disabled={!mainImage || !selectedCategory || !isAgreed}
           className="py-4 px-4 bg-brand text-white rounded-lg hover:brightness-95 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
           제출

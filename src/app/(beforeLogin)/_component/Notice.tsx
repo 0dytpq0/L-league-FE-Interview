@@ -25,7 +25,7 @@ export default function Notice({
   return (
     <div
       className={cn(
-        "flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-[18px]",
+        "flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-5",
         containerClassName
       )}
     >

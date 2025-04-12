@@ -21,7 +21,7 @@ export default function Main() {
       <Notice message={NOTICE_MESSAGE.main} label="공지" />
 
       {/* 조회수 TOP 10 */}
-      <div className="flex items-center gap-1 py-[10px] mx-4">
+      <div className="flex items-center gap-1 py-[10px] mx-3">
         <ImageWrapper
           src={"/icon_rank.svg"}
           alt="rank"
@@ -37,7 +37,7 @@ export default function Main() {
         />
       </div>
       {/* 조회수 슬라이드 */}
-      <div className="w-full mx-[14px]">
+      <div className="w-full  mx-3">
         <SliderWrapper>
           {Array.from({ length: 10 }).map((_, index) => (
             <SwiperSlide key={index}>
@@ -65,8 +65,8 @@ export default function Main() {
       </div>
 
       {/* 블로그 글 목록 */}
-      <div className="relative pb-16">
-        <div className="w-full mt-[38px] mx-3 flex flex-col gap-[26px]">
+      <div className="relative pb-16 mx-3">
+        <div className="w-full mt-[38px] flex flex-col gap-[26px]">
           <div className="flex gap-4">
             <div className="bg-blue-500 w-[120px] h-[120px] rounded-lg">
               img
