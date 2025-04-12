@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/utils/cn";
-import ImageWrapper from "@/app/(beforeLogin)/_component/ImageWrapper";
 import { useRouter } from "next/navigation";
+import ImageWrapper from "./ImageWrapper";
 
 interface BackButtonProps {
   className?: string;

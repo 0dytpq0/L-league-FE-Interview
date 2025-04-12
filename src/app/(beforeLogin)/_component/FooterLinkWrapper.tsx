@@ -1,4 +1,4 @@
-import ImageWrapper from "./ImageWrapper";
+import ImageWrapper from "@/app/_component/ImageWrapper";
 
 interface FooterLinkWrapperProps {
   src: string;

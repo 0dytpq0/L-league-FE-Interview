@@ -1,5 +1,5 @@
+import ImageWrapper from "@/app/_component/ImageWrapper";
 import FooterLinkWrapper from "./FooterLinkWrapper";
-import ImageWrapper from "./ImageWrapper";
 
 export default function Footer() {
   return (

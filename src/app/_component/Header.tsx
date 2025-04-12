@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn";
-import ImageWrapper from "../(beforeLogin)/_component/ImageWrapper";
 import BackButton from "./BackButton";
+import ImageWrapper from "./ImageWrapper";
 
 interface HeaderProps {
   isMain: boolean;

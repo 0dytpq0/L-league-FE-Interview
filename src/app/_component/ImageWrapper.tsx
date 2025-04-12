@@ -23,13 +23,13 @@ export default function ImageWrapper({ ...props }: ImageWrapperProps) {
     src,
     alt,
     imageClassName = "",
-    containerClassName = "relative aspect-auto",
+    containerClassName,
     objectFit = "contain",
     priority = false,
   } = props;
 
   const ImageComponent = (
-    <div className={cn(containerClassName)}>
+    <div className={cn("relative aspect-auto", containerClassName)}>
       <Image
         src={src}
         alt={alt}

@@ -1,12 +1,12 @@
 "use client";
 import Footer from "./_component/Footer";
 import SliderWrapper from "./_component/SliderWrapper";
-import ImageWrapper from "./_component/ImageWrapper";
 import Notice from "./_component/Notice";
 import { SwiperSlide } from "swiper/react";
 import { useState } from "react";
 import Header from "../_component/Header";
 import { NOTICE_MESSAGE } from "@/constants/message";
+import ImageWrapper from "../_component/ImageWrapper";
 
 export default function Main() {
   const tabs = ["전체", "일상생활", "맛집소개", "제품후기", "IT정보"];
