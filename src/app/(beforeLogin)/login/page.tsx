@@ -1,4 +1,4 @@
-import Input from "../_component/Input";
+import Input from "../../_component/Input";
 
 export default function Login() {
   return (

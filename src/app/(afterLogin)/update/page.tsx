@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "@/app/(beforeLogin)/_component/Input";
+import Input from "@/app/_component/Input";
 import Notice from "@/app/(beforeLogin)/_component/Notice";
 import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
 import Header from "@/app/_component/Header";
