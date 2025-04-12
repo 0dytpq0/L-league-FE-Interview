@@ -12,17 +12,27 @@ interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 export default function Input({
   id,
   label,
-  containerClassName = "flex flex-col w-full gap-1",
-  labelClassName = "text-[#CCCCCC] text-[15px] font-bold",
-  inputClassName = "bg-input py-4 px-[10px] rounded-lg placeholder:text-[#C2C2C2] placeholder:text-sm",
+  containerClassName,
+  labelClassName,
+  inputClassName,
   ...props
 }: InputFieldProps) {
   return (
-    <div className={cn(containerClassName)}>
-      <label htmlFor={id} className={cn(labelClassName)}>
+    <div className={cn("flex flex-col w-full gap-2", containerClassName)}>
+      <label
+        htmlFor={id}
+        className={cn("text-[#CCCCCC] text-[15px] font-bold", labelClassName)}
+      >
         {label}
       </label>
-      <input id={id} className={cn(inputClassName)} {...props} />
+      <input
+        id={id}
+        className={cn(
+          "bg-input py-4 px-[10px] rounded-lg placeholder:text-[#C2C2C2] placeholder:text-sm",
+          inputClassName
+        )}
+        {...props}
+      />
     </div>
   );
 }
