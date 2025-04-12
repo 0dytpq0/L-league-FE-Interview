@@ -1,9 +1,10 @@
 "use client";
 
-import Input from "@/app/(beforeLogin)/_component/Input";
+import Input from "@/app/_component/Input";
 import Notice from "@/app/(beforeLogin)/_component/Notice";
 import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
 import Header from "@/app/_component/Header";
+import BackButton from "@/app/_component/BackButton";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import { useState } from "react";
 import TextArea from "@/app/_component/TextArea";
@@ -59,7 +60,10 @@ export default function Create() {
   };
   return (
     <div>
-      <Header isMain={false} title="글 등록" />
+      <Header 
+        title="글 등록" 
+        leftComponent={<BackButton />}
+      />
       <div className="flex flex-col gap-6 mx-5">
         <Notice message={NOTICE_MESSAGE.create} containerClassName="mx-0" />
         <Input

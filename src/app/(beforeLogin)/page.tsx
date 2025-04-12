@@ -4,7 +4,7 @@ import SliderWrapper from "./_component/SliderWrapper";
 import Notice from "./_component/Notice";
 import { SwiperSlide } from "swiper/react";
 import { useState } from "react";
-import Header from "../_component/Header";
+import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
 
@@ -15,7 +15,7 @@ export default function Main() {
   return (
     <div className="relative">
       {/* header */}
-      <Header isMain={true} title="BLOG" />
+      <MainHeader title="BLOG" />
 
       {/* 공지 */}
       <Notice message={NOTICE_MESSAGE.main} label="공지" />
