@@ -9,7 +9,7 @@ interface CheckboxProps {
   label: string;
   required?: boolean;
   onChange?: (checked: boolean) => void;
-  className?: string;
+  containerClassName?: string;
   labelClassName?: string;
   initialChecked?: boolean;
 }
@@ -19,7 +19,7 @@ export default function Checkbox({
   label,
   required = false,
   onChange,
-  className = "",
+  containerClassName = "",
   labelClassName = "",
   initialChecked = false,
 }: CheckboxProps) {
@@ -32,11 +32,11 @@ export default function Checkbox({
   };
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-2", containerClassName)}>
       <div
         className={cn(
           "w-5 h-5 rounded flex items-center justify-center cursor-pointer",
-          isChecked ? "bg-white border border-brand" : "bg-gray"
+          isChecked ? "bg-white border-2 border-brand" : "bg-gray"
         )}
         onClick={handleChange}
       >

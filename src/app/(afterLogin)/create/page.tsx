@@ -103,7 +103,7 @@ export default function Create() {
           label="Blog 이용 정책 위반 시 글 삭제에 동의합니다."
           required
           onChange={handleAgreementChange}
-          className="mt-4 mb-6"
+          containerClassName="mt-4 mb-6"
         />
         <button
           type="button"
