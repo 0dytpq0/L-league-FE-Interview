@@ -7,6 +7,7 @@ import SelectBox from "@/app/(afterLogin)/_component/CategorySelect";
 import Header from "@/app/_component/Header";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import { useState } from "react";
+import TextArea from "@/app/_component/TextArea";
 
 export default function Create() {
   const [mainImage, setMainImage] = useState<File | null>(null);
@@ -79,7 +80,7 @@ export default function Create() {
           onChange={handleCategoryChange}
           required
         />
-        <Input
+        <TextArea
           id="content"
           label="내용(10자 이상)"
           placeholder="블로그 글을 작성해주세요"

@@ -14,4 +14,22 @@
   body {
     @apply h-dvh w-dvw max-w-[1024px] mx-auto;
   }
+  .scrollbar::-webkit-scrollbar {
+    width: 13px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f4f4f4;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #b5b5b5;
+    border-radius: 100vh;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ababab;
+    cursor: pointer;
+  }
 }
