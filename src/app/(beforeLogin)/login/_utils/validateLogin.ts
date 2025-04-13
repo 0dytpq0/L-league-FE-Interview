@@ -1,4 +1,4 @@
-import { LoginRequest } from "@/app/_hooks/useAuth";
+import { LoginRequest } from "@/hooks/useAuth";
 
 export default function validateLogin(
   loginData: LoginRequest,

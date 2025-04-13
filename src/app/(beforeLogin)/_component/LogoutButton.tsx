@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useLogout } from "@/app/_hooks/useAuth";
+import { useLogout } from "@/hooks/useAuth";
 import ImageWrapper from "@/app/_component/ImageWrapper";
 
 export default function LogoutButton() {

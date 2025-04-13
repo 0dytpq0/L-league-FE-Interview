@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/cn";
+import { cn } from "@/utils/cn";
 import { useRouter } from "next/navigation";
 import ImageWrapper from "./ImageWrapper";
 
