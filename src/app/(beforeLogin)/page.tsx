@@ -11,7 +11,6 @@ import ImageWrapper from "../_component/ImageWrapper";
 export default function Main() {
   const tabs = ["전체", "일상생활", "맛집소개", "제품후기", "IT정보"];
   const [selectedTab, setSelectedTab] = useState<number>(0);
-
   return (
     <div className="relative">
       {/* header */}

@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/cn";
 import { ReactNode } from "react";
 
 interface HeaderProps {
@@ -27,7 +27,9 @@ export default function Header({
         {leftComponent}
         <span className={cn("font-bold text-xl", titleClassName)}>{title}</span>
       </div>
-      {rightComponent && <div className="flex items-center">{rightComponent}</div>}
+      {rightComponent && (
+        <div className="flex items-center">{rightComponent}</div>
+      )}
     </header>
   );
 }

@@ -1,5 +1,5 @@
 import ImageWrapper from "@/app/_component/ImageWrapper";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/cn";
 
 interface NoticeProps {
   icon?: string;
