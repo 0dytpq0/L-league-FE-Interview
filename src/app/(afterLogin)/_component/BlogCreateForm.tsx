@@ -8,6 +8,7 @@ import SubmitButton from "@/app/_component/SubmitButton";
 import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
 import { Categories } from "@/constants/data";
 import { useBlogForm } from "../_hooks/useBlogForm";
+import { useBackConfirm } from "../_hooks/useBackConfirm";
 
 export default function BlogCreateForm() {
   const {
@@ -23,6 +24,8 @@ export default function BlogCreateForm() {
     handleAgreementChange,
     handleSubmit,
   } = useBlogForm();
+
+  useBackConfirm();
 
   return (
     <div className="flex flex-col gap-6 mx-5">
