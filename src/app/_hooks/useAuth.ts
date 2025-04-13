@@ -1,13 +1,8 @@
 "use client";
 
 import { AUTH_QUERY_KEY } from "@/constants/queryKey";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-// API 관련 타입 정의
 export interface LoginRequest {
   email: string;
   password: string;
@@ -76,26 +71,26 @@ export function useLogin() {
 // 로그아웃 훅
 export function useLogout() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationKey: ['logout'],
+    mutationKey: ["logout"],
     mutationFn: async (): Promise<void> => {
       const response = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        cache: "no-store"
+        cache: "no-store",
       });
-      
+
       if (!response.ok) {
         throw new Error("로그아웃에 실패했습니다");
       }
-      
+
       return;
     },
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: [AUTH_QUERY_KEY] });
-    }
+    },
   });
 }
