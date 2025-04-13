@@ -65,21 +65,7 @@ export default function BlogCreateForm() {
       return;
     }
 
-    createBlog(formData, {
-      onSuccess: (data) => {
-        console.log("블로그 생성 성공:", data);
-        alert("블로그가 성공적으로 등록되었습니다!");
-        // TODO: 성공 후 블로그 목록 페이지로 이동 또는 다른 처리
-      },
-      onError: (error) => {
-        console.error("블로그 등록 중 오류 발생:", error);
-        alert(
-          error instanceof Error
-            ? error.message
-            : "블로그 등록 중 오류가 발생했습니다."
-        );
-      },
-    });
+    createBlog(formData);
   };
 
   return (
