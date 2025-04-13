@@ -1,5 +1,28 @@
 // 블로그 관련 타입 정의
 
+// 카테고리 API 요청 타입
+export interface CategoryRequest {
+  page: number;
+  page_size: number;
+}
+
+// 카테고리 아이템 타입
+export interface CategoryItem {
+  id: number;
+  name: string;
+}
+
+// 카테고리 API 응답 타입
+export interface CategoryResponse {
+  count: number;
+  totalCnt: number;
+  pageCnt: number;
+  curPage: number;
+  nextPage: number;
+  previousPage: number;
+  data: CategoryItem[];
+}
+
 // 블로그 생성 API 요청 타입
 export interface BlogCreateRequest {
   category: number;

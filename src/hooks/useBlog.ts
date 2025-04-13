@@ -12,6 +12,7 @@ import {
   CategoryResponse,
 } from "@/types/blog";
 import { validateBlogForm } from "@/app/(afterLogin)/_utils/validateBlog";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 /**
@@ -52,6 +53,7 @@ export function useCategories(params: CategoryRequest) {
  * React Query의 useMutation을 사용하여 블로그 생성 API를 호출합니다.
  */
 export function useCreateBlog() {
+  const router = useRouter();
   return useMutation<BlogCreateResponse, Error, BlogFormData>({
     mutationFn: async (formData: BlogFormData) => {
       // 유효성 검사
@@ -97,6 +99,18 @@ export function useCreateBlog() {
       }
 
       return (await response.json()) as BlogCreateResponse;
+    },
+    onSuccess: (res) => {
+      alert("블로그가 성공적으로 등록되었습니다!");
+      router.replace(`/${res.id}`);
+    },
+    onError: (error) => {
+      console.error("블로그 등록 중 오류 발생:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "블로그 등록 중 오류가 발생했습니다."
+      );
     },
   });
 }
