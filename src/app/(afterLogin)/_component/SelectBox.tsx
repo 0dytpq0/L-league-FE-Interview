@@ -1,7 +1,7 @@
 "use client";
 
 import ImageWrapper from "@/app/_component/ImageWrapper";
-import { cn } from "@/lib/cn";
+import { cn } from "@/utils/cn";
 import { useState } from "react";
 
 interface SelectBoxProps {

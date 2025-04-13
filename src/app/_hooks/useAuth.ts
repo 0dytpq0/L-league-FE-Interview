@@ -2,6 +2,7 @@
 
 import { AUTH_QUERY_KEY } from "@/constants/queryKey";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getAuthHeaders, removeTokenFromCookie, saveTokenToCookie } from "@/utils/cookies";
 
 export interface LoginRequest {
   email: string;
@@ -22,9 +23,7 @@ export function useMe() {
     queryFn: async () => {
       const response = await fetch(`${BASE_URL}/api/v1/auth/me`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAuthHeaders(), // 쿠키에서 토큰을 가져와 인증 헤더 생성
         cache: "no-store",
       });
 
@@ -60,9 +59,12 @@ export function useLogin() {
         throw new Error("로그인에 실패했습니다");
       }
 
-      return response.json();
+      const loginData = await response.json();
+      return loginData;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // 로그인 성공 시 쿠키에 토큰 저장
+      saveTokenToCookie(data.access);
       queryClient.invalidateQueries({ queryKey: [AUTH_QUERY_KEY] });
     },
   });
@@ -77,9 +79,7 @@ export function useLogout() {
     mutationFn: async (): Promise<void> => {
       const response = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAuthHeaders(), // 쿠키에서 토큰을 가져와 인증 헤더 생성
         cache: "no-store",
       });
 
@@ -90,6 +90,8 @@ export function useLogout() {
       return;
     },
     onSuccess: () => {
+      // 로그아웃 시 쿠키에서 토큰 삭제
+      removeTokenFromCookie();
       queryClient.removeQueries({ queryKey: [AUTH_QUERY_KEY] });
     },
   });
