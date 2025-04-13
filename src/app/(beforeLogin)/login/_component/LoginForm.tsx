@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useLogin, LoginRequest } from "@/app/_hooks/useAuth";
+import { useLogin, LoginRequest } from "@/hooks/useAuth";
 import Input from "@/app/_component/Input";
-import validateLogin from "../_lib/validateLogin";
+import validateLogin from "../_utils/validateLogin";
 import SubmitButton from "@/app/_component/SubmitButton";
 
 export default function LoginForm() {
