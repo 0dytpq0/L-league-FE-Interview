@@ -1,5 +1,6 @@
 import ImageWrapper from "@/app/_component/ImageWrapper";
 import FooterLinkWrapper from "./FooterLinkWrapper";
+import LogoutButton from "./LogoutButton";
 
 export default function Footer() {
   return (
@@ -16,7 +17,7 @@ export default function Footer() {
           <FooterLinkWrapper src="/page_home.svg" alt="home" href="/" />
           <FooterLinkWrapper src="/page_chat.svg" alt="chat" href="/" />
           <FooterLinkWrapper src="/page_rank.svg" alt="rank" href="/" />
-          <FooterLinkWrapper src="/page_user.svg" alt="login" href="/login" />
+          <LogoutButton />
         </div>
       </footer>
     </>

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLogin, LoginRequest } from "@/app/_hooks/useAuth";
 import Input from "@/app/_component/Input";
-import { cn } from "@/lib/cn";
 import validateLogin from "../_lib/validateLogin";
+import SubmitButton from "@/app/_component/SubmitButton";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -66,18 +66,16 @@ export default function LoginForm() {
           onChange={handleInputChange}
         />
       </div>
-      <button
+      <SubmitButton
         type="submit"
-        className={cn(
-          "mx-4 py-3 mb-[33px] bg-brand disabled:bg-[#B4B4B4] cursor-pointer rounded-lg hover:brightness-95 active:brightness-90 focus:outline-none",
-          isPending && "brightness-95"
-        )}
-        disabled={validateLogin(loginData, isPending)}
+        isPending={isPending}
+        isDisabled={validateLogin(loginData, isPending)}
+        className="mx-4 mb-[33px]"
+        isFullWidth
+        pendingText="로그인 중..."
       >
-        <span className="text-white text-center font-bold">
-          {isPending ? "로그인 중..." : "로그인"}
-        </span>
-      </button>
+        로그인
+      </SubmitButton>
     </form>
   );
 }

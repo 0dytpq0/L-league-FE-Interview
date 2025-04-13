@@ -10,12 +10,14 @@ import { useState } from "react";
 import TextArea from "@/app/_component/TextArea";
 import Checkbox from "@/app/_component/Checkbox";
 import SelectBox from "../_component/SelectBox";
+import SubmitButton from "@/app/_component/SubmitButton";
 
 export default function Create() {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [subImage, setSubImage] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const categories = ["일상생활", "맛집소개", "제품후기", "IT정보"];
 
   const handleMainImageChange = (file: File | null) => {
@@ -34,7 +36,8 @@ export default function Create() {
     setIsAgreed(checked);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // 유효성 검사
     if (!mainImage) {
       alert("대표사진을 선택해주세요.");
       return;
@@ -50,13 +53,26 @@ export default function Create() {
       return;
     }
 
-    console.log({
-      mainImage,
-      subImage,
-      category: selectedCategory,
-    });
-
-    alert("폼이 제출되었습니다!");
+    try {
+      setIsSubmitting(true);
+      
+      // 실제 API 호출 로직을 여기에 구현
+      console.log({
+        mainImage,
+        subImage,
+        category: selectedCategory,
+      });
+      
+      // API 호출 시간을 시뮬레이션하기 위한 지연
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      alert("폼이 제출되었습니다!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("제출 중 오류가 발생했습니다.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <div>
@@ -109,14 +125,16 @@ export default function Create() {
           onChange={handleAgreementChange}
           containerClassName="mt-4 mb-6"
         />
-        <button
-          type="button"
+        <SubmitButton
           onClick={handleSubmit}
-          // disabled={!mainImage || !selectedCategory || !isAgreed}
-          className="py-4 px-4 bg-brand text-white rounded-lg hover:brightness-95 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          isPending={isSubmitting}
+          isDisabled={!mainImage || !selectedCategory || !isAgreed}
+          size="lg"
+          isFullWidth
+          pendingText="제출 중..."
         >
           제출
-        </button>
+        </SubmitButton>
       </div>
     </div>
   );
