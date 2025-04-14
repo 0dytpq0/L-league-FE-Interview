@@ -19,7 +19,6 @@ export default function Main() {
   console.log("data", categories?.data);
   const tabs = [{ id: 0, name: "전체" }, ...(categories?.data || [])];
 
-  // 실제 API 호출 대신 페이크 데이터 사용
   const { data: blogList } = useBlogList({
     page: 1,
     page_size: 10,

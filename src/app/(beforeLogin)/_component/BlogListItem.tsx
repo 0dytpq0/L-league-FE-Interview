@@ -2,6 +2,7 @@ import Link from "next/link";
 import ImageWrapper from "@/app/_component/ImageWrapper";
 import MoreButton from "./MoreButton";
 import { BlogItem } from "@/hooks/useBlog";
+import dayjs from "dayjs";
 
 interface BlogListItemProps {
   blog: BlogItem;
@@ -35,7 +36,8 @@ export default function BlogListItem({ blog }: BlogListItemProps) {
           {content || "본문"}
         </p>
         <span className="text-[12.7px] text-[#A8A8A8] font-bold">
-          {created_at || "2025.04.07 12:00"}
+          작성일시 :{" "}
+          {dayjs(created_at).format("YYYY.MM.DD HH:mm") || "2025.04.07 12:00"}
         </span>
       </div>
     </div>
