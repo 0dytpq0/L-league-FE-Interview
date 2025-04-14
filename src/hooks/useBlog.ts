@@ -166,9 +166,9 @@ export function useBlogList(params: BlogListRequest) {
     queryKey: ["blogList", params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
-        category_id: params.category_id ? params.category_id.toString() : "",
-        category_name: params.category_name || "",
-        title: params.title || "",
+        // category_id: params.category_id?.toString() || "1",
+        // category_name: params.category_name || "일상생활",
+        // title: params.title || "",
         page: params.page.toString(),
         page_size: params.page_size.toString(),
       });

@@ -8,8 +8,7 @@ import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
 import { useBlogList, useCategories } from "@/hooks/useBlog";
-import Link from "next/link";
-import MoreButton from "./_component/MoreButton";
+import BlogList from "./_component/BlogList";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -20,10 +19,8 @@ export default function Main() {
   console.log("data", categories?.data);
   const tabs = [{ id: 0, name: "전체" }, ...(categories?.data || [])];
 
+  // 실제 API 호출 대신 페이크 데이터 사용
   const { data: blogList } = useBlogList({
-    category_id: 1,
-    category_name: "일상생활",
-    title: "박요셉타이틀",
     page: 1,
     page_size: 10,
   });
@@ -87,83 +84,7 @@ export default function Main() {
 
       {/* 블로그 글 목록 */}
       <div className="relative pb-16 mx-3">
-        <div className="w-full mt-[38px] flex flex-col gap-[26px]">
-          <div className="flex gap-4">
-            <ImageWrapper
-              src={blogList?.data[0]?.main_image || "/icon_main.svg"}
-              alt="mainImage"
-              href="/blog/1"
-              containerClassName="relative aspect-auto w-[120px] h-[120px] rounded-lg"
-              objectFit="contain"
-            />
-            <div className="flex flex-col flex-1 gap-[6px]">
-              <div className="flex justify-between items-center">
-                <Link href={`/blog/${1}`} className="text-[15.4px] font-bold">
-                  {blogList?.data[0]?.title || "블로그 글 타이틀"}
-                </Link>
-                <MoreButton
-                  id={blogList?.data[0]?.id || 1}
-                  onDelete={(id) => {
-                    console.log("삭제 클릭", id);
-                    // 삭제 기능 구현
-                  }}
-                />
-              </div>
-              <p className="text-[12.7px] text-[#A8A8A8] font-bold">
-                {blogList?.data[0]?.content || "본문"}
-              </p>
-              <span className="text-[12.7px] text-[#A8A8A8] font-bold">
-                {blogList?.data[0]?.created_at || "2025.04.07 12:00"}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="bg-blue-500 w-[120px] h-[120px]">img</div>
-            <div className="flex flex-col flex-1 gap-[6px]">
-              <div className="flex justify-between items-center">
-                <span className="text-[15.4px] font-bold">
-                  블로그 글 타이틀
-                </span>
-                <div>img</div>
-              </div>
-              <p className="text-[12.7px] text-[#A8A8A8] font-bold">본문</p>
-              <span className="text-[12.7px] text-[#A8A8A8] font-bold">
-                작성일시
-              </span>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="bg-blue-500 w-[120px] h-[120px]">img</div>
-            <div className="flex flex-col flex-1 gap-[6px]">
-              <div className="flex justify-between items-center">
-                <span className="text-[15.4px] font-bold">
-                  블로그 글 타이틀
-                </span>
-                <div>img</div>
-              </div>
-              <p className="text-[12.7px] text-[#A8A8A8] font-bold">본문</p>
-              <span className="text-[12.7px] text-[#A8A8A8] font-bold">
-                작성일시
-              </span>
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="bg-blue-500 w-[120px] h-[120px]">img</div>
-            <div className="flex flex-col flex-1 gap-[6px]">
-              <div className="flex justify-between items-center">
-                <span className="text-[15.4px] font-bold">
-                  블로그 글 타이틀
-                </span>
-                <div>img</div>
-              </div>
-              <p className="text-[12.7px] text-[#A8A8A8] font-bold">본문</p>
-              <span className="text-[12.7px] text-[#A8A8A8] font-bold">
-                작성일시
-              </span>
-            </div>
-          </div>
-        </div>
+        <BlogList blogList={blogList} />
       </div>
 
       {/* create 버튼 */}
