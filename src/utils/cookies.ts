@@ -14,14 +14,14 @@ export const saveTokenToCookie = (token: string, maxAge: number = 86400) => {
  * @returns 저장된 액세스 토큰 또는 null
  */
 export const getTokenFromCookie = (): string | null => {
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     return null; // 서버 사이드에서 실행 시 null 반환
   }
-  
-  const cookies = document.cookie.split(';');
+
+  const cookies = document.cookie.split(";");
   for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split('=');
-    if (name === 'accessToken') {
+    const [name, value] = cookie.trim().split("=");
+    if (name === "accessToken") {
       return value;
     }
   }
@@ -32,7 +32,7 @@ export const getTokenFromCookie = (): string | null => {
  * 쿠키에서 액세스 토큰을 삭제하는 함수
  */
 export const removeTokenFromCookie = () => {
-  document.cookie = 'accessToken=; path=/; max-age=0';
+  document.cookie = "accessToken=; path=/; max-age=0";
 };
 
 /**

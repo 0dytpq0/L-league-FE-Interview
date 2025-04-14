@@ -7,6 +7,7 @@ import {
   BlogCreateRequest,
   BlogCreateResponse,
   BlogFormData,
+  BlogItem,
   BlogListRequest,
   BlogListResponse,
   CategoryRequest,
@@ -43,7 +44,6 @@ export function useCategories(params: CategoryRequest) {
 
       return response.json();
     },
-    staleTime: 5 * 60 * 1000, // 5분
   });
 }
 
@@ -140,7 +140,6 @@ export function useBlogList(params: BlogListRequest) {
       }
       return response.json();
     },
-    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -173,6 +172,28 @@ export function useDeleteBlog() {
           ? error.message
           : "블로그 삭제 중 오류가 발생했습니다."
       );
+    },
+  });
+}
+
+/**
+ * 상세 블로그 조회 훅
+ */
+export function useDetailBlog(blogId: number) {
+  return useQuery<BlogItem>({
+    queryKey: ["blog", blogId],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/blog/${blogId}`,
+        {
+          headers: getAuthHeaders(),
+          cache: "no-store",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("블로그 상세 정보 조회에 실패했습니다");
+      }
+      return response.json();
     },
   });
 }
