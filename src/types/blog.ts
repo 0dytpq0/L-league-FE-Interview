@@ -1,5 +1,15 @@
 // 블로그 관련 타입 정의
 
+// 사용자 정보 타입
+export interface User {
+  id: number;
+  email: string;
+  status: string;
+  name: string;
+  phone_number: string;
+  profile_image: string;
+}
+
 // 카테고리 API 요청 타입
 export interface CategoryRequest {
   page: number;
@@ -54,5 +64,38 @@ export interface BlogFormData {
   content: string;
   mainImage: File | null;
   subImage: File | null;
-  category: string;
+  category: number;
+}
+
+// 블로그 목록 API 요청 타입
+export interface BlogListRequest {
+  category_id?: number;
+  category_name?: string;
+  title?: string;
+  page: number;
+  page_size: number;
+}
+
+// 블로그 아이템 타입
+export interface BlogItem {
+  user: User;
+  category: CategoryItem;
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  title: string;
+  main_image: string;
+  sub_image: string;
+  content: string;
+}
+
+export interface BlogListResponse {
+  count: number;
+  totalCnt: number;
+  pageCnt: number;
+  curPage: number;
+  nextPage: number;
+  previousPage: number;
+  data: BlogItem[];
 }

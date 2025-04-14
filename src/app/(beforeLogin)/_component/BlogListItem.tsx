@@ -3,8 +3,9 @@
 import Link from "next/link";
 import ImageWrapper from "@/app/_component/ImageWrapper";
 import MoreButton from "./MoreButton";
-import { BlogItem, useDeleteBlog } from "@/hooks/useBlog";
 import dayjs from "dayjs";
+import { useDeleteBlog } from "@/hooks/useBlog";
+import { BlogItem } from "@/types/blog";
 
 interface BlogListItemProps {
   blog: BlogItem;

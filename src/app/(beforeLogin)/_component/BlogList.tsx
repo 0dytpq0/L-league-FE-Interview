@@ -1,6 +1,6 @@
 "use client";
 
-import { BlogItem, BlogListResponse } from "@/hooks/useBlog";
+import { BlogItem, BlogListResponse } from "@/types/blog";
 import BlogListItem from "./BlogListItem";
 
 interface BlogListProps {

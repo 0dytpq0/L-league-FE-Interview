@@ -7,6 +7,8 @@ import {
   BlogCreateRequest,
   BlogCreateResponse,
   BlogFormData,
+  BlogListRequest,
+  BlogListResponse,
   CategoryRequest,
   CategoryResponse,
 } from "@/types/blog";
@@ -111,51 +113,6 @@ export function useCreateBlog() {
       );
     },
   });
-}
-
-export interface BlogListRequest {
-  category_id?: number;
-  category_name?: string;
-  title?: string;
-  page: number;
-  page_size: number;
-}
-
-export interface BlogUser {
-  id: number;
-  email: string;
-  status: string;
-  name: string;
-  phone_number: string;
-  profile_image: string;
-}
-
-export interface BlogCategory {
-  id: number;
-  name: string;
-}
-
-export interface BlogItem {
-  user: BlogUser;
-  category: BlogCategory;
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-  title: string;
-  main_image: string;
-  sub_image: string;
-  content: string;
-}
-
-export interface BlogListResponse {
-  count: number;
-  totalCnt: number;
-  pageCnt: number;
-  curPage: number;
-  nextPage: number;
-  previousPage: number;
-  data: BlogItem[];
 }
 
 /**
