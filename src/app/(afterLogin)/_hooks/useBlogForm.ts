@@ -5,17 +5,16 @@ import { BlogFormData } from "@/types/blog";
 import { useCreateBlog } from "@/hooks/useBlog";
 import { validateBlogForm } from "../_utils/validateBlog";
 
-export const useBlogForm = () => {
+export function useBlogForm() {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [subImage, setSubImage] = useState<File | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const { mutate: createBlog, isPending } = useCreateBlog();
-
   const handleMainImageChange = (file: File | null) => {
     setMainImage(file);
   };
@@ -24,7 +23,7 @@ export const useBlogForm = () => {
     setSubImage(file);
   };
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category: number) => {
     setSelectedCategory(category);
   };
 
@@ -33,7 +32,6 @@ export const useBlogForm = () => {
   };
 
   const handleSubmit = async () => {
-    // 이용 정책 동의 검사
     if (!isAgreed) {
       alert("Blog 이용 정책 동의가 필요합니다.");
       return;
@@ -42,16 +40,14 @@ export const useBlogForm = () => {
     const title = titleRef.current?.value || "";
     const content = contentRef.current?.value || "";
 
-    // 폼 데이터 구성
     const formData: BlogFormData = {
       title,
       content,
       mainImage,
       subImage,
-      category: selectedCategory,
+      category: selectedCategory || 5,
     };
 
-    // 유효성 검사
     const validationError = validateBlogForm(formData);
     if (validationError) {
       alert(validationError);
@@ -75,4 +71,4 @@ export const useBlogForm = () => {
     handleAgreementChange,
     handleSubmit,
   };
-};
+}

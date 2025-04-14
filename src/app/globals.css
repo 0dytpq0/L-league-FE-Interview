@@ -32,4 +32,8 @@
     background: #ababab;
     cursor: pointer;
   }
+
+  .scroll-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

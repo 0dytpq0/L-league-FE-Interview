@@ -6,9 +6,9 @@ import Checkbox from "@/app/_component/Checkbox";
 import SelectBox from "../_component/SelectBox";
 import SubmitButton from "@/app/_component/SubmitButton";
 import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
-import { Categories } from "@/constants/data";
 import { useBlogForm } from "../_hooks/useBlogForm";
 import { useBackConfirm } from "../_hooks/useBackConfirm";
+import { useCategories } from "@/hooks/useBlog";
 
 export default function BlogCreateForm() {
   const {
@@ -26,6 +26,10 @@ export default function BlogCreateForm() {
   } = useBlogForm();
 
   useBackConfirm();
+  const { data: categories } = useCategories({
+    page: 1,
+    page_size: 10,
+  });
 
   return (
     <div className="flex flex-col gap-6 mx-5">
@@ -56,7 +60,7 @@ export default function BlogCreateForm() {
       <SelectBox
         id="category"
         label="카테고리"
-        options={Categories}
+        options={categories?.data || []}
         selectedOption={selectedCategory}
         onChange={handleCategoryChange}
         required
