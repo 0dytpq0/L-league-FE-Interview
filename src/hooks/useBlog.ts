@@ -97,7 +97,7 @@ export function useCreateBlog() {
         throw new Error(`API 요청 실패: ${response.status}`);
       }
 
-      return (await response.json()) as BlogCreateResponse;
+      return response.json();
     },
     onSuccess: (res) => {
       alert("블로그가 성공적으로 등록되었습니다!");
@@ -196,4 +196,80 @@ export function useDetailBlog(blogId: number) {
       return response.json();
     },
   });
+}
+
+/**
+ * 블로그 수정 훅
+ */
+export function useUpdateBlog() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    BlogItem,
+    Error,
+    BlogUpdateRequest & {
+      blog_id: number;
+    }
+  >({
+    mutationFn: async ({ blog_id, ...formData }) => {
+      // 이미지 업로드 처리
+      console.log("blog_id, formData", blog_id, formData);
+      const mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
+
+      // 서브 이미지 처리
+      let subImageUrl = null;
+
+      if (formData.subImage) {
+        subImageUrl = await uploadImageToS3(formData.subImage, "sub_");
+      }
+      const requestData: BlogCreateRequest = {
+        category: formData.category,
+        title: formData.title,
+        main_image: mainImageUrl,
+        content: formData.content,
+      };
+      if (subImageUrl) {
+        requestData.sub_image = subImageUrl;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/blog/${blog_id}`,
+        {
+          method: "PATCH",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(requestData),
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`블로그 수정 실패: ${response.status}`);
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      alert("블로그가 성공적으로 수정되었습니다!");
+      queryClient.invalidateQueries({ queryKey: ["blogList"] });
+      queryClient.invalidateQueries({ queryKey: ["blog", data.id] });
+      router.push(`/blog/${data.id}`);
+    },
+    onError: (error) => {
+      console.error("블로그 수정 중 오류 발생:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "블로그 수정 중 오류가 발생했습니다."
+      );
+    },
+  });
+}
+
+interface BlogUpdateRequest {
+  category: number;
+  title: string;
+  mainImage: File | null;
+  subImage: File | null;
+  content: string;
 }

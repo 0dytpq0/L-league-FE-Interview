@@ -6,6 +6,7 @@ import { ChangeEvent, useRef, useState } from "react";
 interface ImageUploaderProps {
   id: string;
   label: string;
+  defaultValue?: string | null;
   onChange?: (file: File | null) => void;
   containerClassName?: string;
   labelClassName?: string;
@@ -15,14 +16,14 @@ interface ImageUploaderProps {
 export default function ImageUploader({
   id,
   label,
+  defaultValue,
   onChange,
   containerClassName,
   labelClassName,
   required = false,
 }: ImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-
+  const [preview, setPreview] = useState<string | null>(defaultValue || null);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
 
@@ -75,7 +76,7 @@ export default function ImageUploader({
         style={
           preview
             ? {
-                backgroundImage: `url(${preview})`,
+                backgroundImage: `url("${preview}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }

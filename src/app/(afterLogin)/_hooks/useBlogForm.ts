@@ -2,19 +2,27 @@
 
 import { useState, useRef } from "react";
 import { BlogFormData } from "@/types/blog";
-import { useCreateBlog } from "@/hooks/useBlog";
+import { useCreateBlog, useUpdateBlog } from "@/hooks/useBlog";
 import { validateBlogForm } from "../_utils/validateBlog";
 
-export function useBlogForm() {
+interface UseBlogFormProps {
+  isUpdate?: boolean;
+  blogId?: number;
+}
+
+export function useBlogForm({
+  isUpdate = false,
+  blogId,
+}: UseBlogFormProps = {}) {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [subImage, setSubImage] = useState<File | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
-
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  const { mutate: createBlog, isPending } = useCreateBlog();
+  const { mutate: createBlog, isPending: isCreatePending } = useCreateBlog();
+  const { mutate: updateBlog, isPending: isUpdatePending } = useUpdateBlog();
+  const isPending = isUpdate ? isUpdatePending : isCreatePending;
   const handleMainImageChange = (file: File | null) => {
     setMainImage(file);
   };
@@ -53,8 +61,16 @@ export function useBlogForm() {
       alert(validationError);
       return;
     }
-
-    createBlog(formData);
+    if (isUpdate && blogId) {
+      // 블로그 수정 로직
+      updateBlog({
+        blog_id: blogId,
+        ...formData,
+      });
+    } else {
+      // 블로그 생성 로직
+      createBlog(formData);
+    }
   };
 
   return {
