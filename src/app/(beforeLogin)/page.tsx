@@ -3,12 +3,14 @@ import Footer from "./_component/Footer";
 import SliderWrapper from "./_component/SliderWrapper";
 import Notice from "./_component/Notice";
 import { SwiperSlide } from "swiper/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
 import { useBlogList, useCategories } from "@/hooks/useBlog";
 import BlogList from "./_component/BlogList";
+import TabMenu from "./_component/TabMenu";
+import { useFilteredBlogList } from "@/app/(beforeLogin)/_hooks/useFilteredBlogList";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -17,13 +19,22 @@ export default function Main() {
     page_size: 10,
   });
   console.log("data", categories?.data);
-  const tabs = [{ id: 0, name: "전체" }, ...(categories?.data || [])];
+  const tabs = useMemo(
+    () => [
+      { id: 0, name: "전체" },
+      ...(categories?.data.filter((c) => c.id !== 5) || []),
+    ],
+    [categories?.data]
+  );
 
   const { data: blogList } = useBlogList({
     page: 1,
     page_size: 10,
   });
   console.log("blogList", blogList);
+
+  // 선택된 탭에 따라 필터링된 블로그 목록
+  const filteredBlogList = useFilteredBlogList(blogList, selectedTab, tabs);
 
   if (isPending) {
     return <div>로딩중...</div>;
@@ -64,26 +75,15 @@ export default function Main() {
         </SliderWrapper>
       </div>
       {/* 탭  */}
-      <div className="w-full px-[18px] py-4 flex justify-between">
-        {tabs.map((tab, index) => (
-          <div
-            key={index}
-            className="relative min-w-[35px] text-center cursor-pointer"
-            onClick={() => setSelectedTab(index)}
-          >
-            <span className="text-[15.4px] text-[#737373] font-bold">
-              {tab.name}
-            </span>
-            {selectedTab === index && (
-              <div className="absolute -bottom-[5px] min-w-[35px] w-full h-[6px] bg-brand rounded-xl"></div>
-            )}
-          </div>
-        ))}
-      </div>
+      <TabMenu
+        tabs={tabs}
+        selectedTab={selectedTab}
+        onTabChange={setSelectedTab}
+      />
 
       {/* 블로그 글 목록 */}
       <div className="relative pb-16 mx-3">
-        <BlogList blogList={blogList} />
+        <BlogList blogList={filteredBlogList} />
       </div>
 
       {/* create 버튼 */}

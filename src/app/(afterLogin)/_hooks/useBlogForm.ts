@@ -5,17 +5,17 @@ import { BlogFormData } from "@/types/blog";
 import { useCreateBlog } from "@/hooks/useBlog";
 import { validateBlogForm } from "../_utils/validateBlog";
 
-export const useBlogForm = () => {
+export function useBlogForm() {
   const [mainImage, setMainImage] = useState<File | null>(null);
   const [subImage, setSubImage] = useState<File | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const { mutate: createBlog, isPending } = useCreateBlog();
-
+  console.log("selectedCategory", selectedCategory);
   const handleMainImageChange = (file: File | null) => {
     setMainImage(file);
   };
@@ -24,7 +24,7 @@ export const useBlogForm = () => {
     setSubImage(file);
   };
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category: number) => {
     setSelectedCategory(category);
   };
 
@@ -48,9 +48,9 @@ export const useBlogForm = () => {
       content,
       mainImage,
       subImage,
-      category: selectedCategory,
+      category: selectedCategory || 5,
     };
-
+    console.log("formData", formData);
     // 유효성 검사
     const validationError = validateBlogForm(formData);
     if (validationError) {
@@ -75,4 +75,4 @@ export const useBlogForm = () => {
     handleAgreementChange,
     handleSubmit,
   };
-};
+}

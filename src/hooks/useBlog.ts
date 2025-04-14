@@ -3,7 +3,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { uploadImageToS3 } from "@/app/(afterLogin)/_utils/awsUpload";
 import { getAuthHeaders } from "@/utils/cookies";
-import { Categories } from "@/constants/data";
 import {
   BlogCreateRequest,
   BlogCreateResponse,
@@ -70,11 +69,10 @@ export function useCreateBlog() {
       }
 
       // 카테고리 ID 찾기
-      const categoryId = Categories.indexOf(formData.category);
 
       // API 요청 데이터 준비
       const requestData: BlogCreateRequest = {
-        category: categoryId,
+        category: formData.category,
         title: formData.title,
         main_image: mainImageUrl,
         content: formData.content,
@@ -100,7 +98,7 @@ export function useCreateBlog() {
     },
     onSuccess: (res) => {
       alert("블로그가 성공적으로 등록되었습니다!");
-      router.replace(`/${res.id}`);
+      router.replace(`/blog/${res.id}`);
     },
     onError: (error) => {
       console.error("블로그 등록 중 오류 발생:", error);
