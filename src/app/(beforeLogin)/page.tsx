@@ -10,7 +10,6 @@ import ImageWrapper from "../_component/ImageWrapper";
 import { useBlogList, useCategories } from "@/hooks/useBlog";
 import BlogList from "./_component/BlogList";
 import TabMenu from "./_component/TabMenu";
-import { useFilteredBlogList } from "@/app/(beforeLogin)/_hooks/useFilteredBlogList";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -18,7 +17,6 @@ export default function Main() {
     page: 1,
     page_size: 10,
   });
-  console.log("data", categories?.data);
   const tabs = useMemo(
     () => [
       { id: 0, name: "전체" },
@@ -27,14 +25,11 @@ export default function Main() {
     [categories?.data]
   );
 
-  const { data: blogList } = useBlogList({
+  // 블로그 목록 데이터 조회 (초기 데이터만 위해 사용)
+  const { data: initialBlogList } = useBlogList({
     page: 1,
-    page_size: 10,
+    page_size: 2,
   });
-  console.log("blogList", blogList);
-
-  // 선택된 탭에 따라 필터링된 블로그 목록
-  const filteredBlogList = useFilteredBlogList(blogList, selectedTab, tabs);
 
   if (isPending) {
     return <div>로딩중...</div>;
@@ -83,10 +78,13 @@ export default function Main() {
 
       {/* 블로그 글 목록 */}
       <div className="relative pb-16 mx-3">
-        <BlogList blogList={filteredBlogList} />
+        <BlogList 
+          initialBlogList={initialBlogList} 
+          selectedTab={selectedTab} 
+          tabs={tabs} 
+          pageSize={2} 
+        />
       </div>
-
-      {/* create 버튼 */}
 
       <Footer />
     </div>

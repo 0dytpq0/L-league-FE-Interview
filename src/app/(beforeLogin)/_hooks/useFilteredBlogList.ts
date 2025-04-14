@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { BlogItem, BlogListResponse } from "../../../hooks/useBlog";
+import { BlogItem, BlogListResponse } from "@/types/blog";
 
 /**
  * 블로그 목록을 카테고리에 따라 필터링하는 커스텀 훅
