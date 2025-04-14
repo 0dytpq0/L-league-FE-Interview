@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { BlogItem, BlogListResponse } from "@/types/blog";
+import { BlogItem, BlogListRequest, BlogListResponse } from "@/types/blog";
 import { useBlogList } from "@/hooks/useBlog";
 import BlogListItem from "./BlogListItem";
 import Pagination from "./Pagination";
@@ -18,20 +18,23 @@ interface BlogListProps {
  * 블로그 목록 컴포넌트 - 블로그 데이터를 받아 목록으로 표시
  */
 export default function BlogList({
-  initialBlogList,
   selectedTab = 0,
   tabs = [],
-  pageSize = 2,
+  pageSize = 10,
   onPageChange,
 }: BlogListProps) {
   // 페이지 상태 관리
-  const [currentPage, setCurrentPage] = useState(initialBlogList?.curPage || 1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // 블로그 목록 데이터 조회
-  const { data: blogList, isLoading } = useBlogList({
+  const params: BlogListRequest = {
     page: currentPage,
     page_size: pageSize,
-  });
+  };
+  if (selectedTab !== undefined && selectedTab !== 0) {
+    params.category_id = selectedTab;
+  }
+  const { data: blogList, isLoading } = useBlogList(params);
 
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {

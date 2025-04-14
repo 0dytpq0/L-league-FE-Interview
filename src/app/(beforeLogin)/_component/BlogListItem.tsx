@@ -37,7 +37,7 @@ export default function BlogListItem({ blog }: BlogListItemProps) {
         objectFit="contain"
       />
       <div className="flex flex-col flex-1 gap-[6px]">
-        <div className="flex justify-between items-center">
+        <div className="flex w-full justify-between items-center">
           <Link href={`/blog/${id}`} className="text-[15.4px] font-bold">
             {title}
           </Link>

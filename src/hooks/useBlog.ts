@@ -122,13 +122,13 @@ export function useBlogList(params: BlogListRequest) {
   return useQuery<BlogListResponse>({
     queryKey: ["blogList", params],
     queryFn: async () => {
-      const queryParams = new URLSearchParams({
-        // category_id: params.category_id?.toString() || "1",
-        // category_name: params.category_name || "일상생활",
-        // title: params.title || "",
-        page: params.page.toString(),
-        page_size: params.page_size.toString(),
+      const queryParams = new URLSearchParams();
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined || value !== 0) {
+          queryParams.append(key, String(value));
+        }
       });
+
       const response = await fetch(`${BASE_URL}/api/v1/blog?${queryParams}`, {
         method: "GET",
         headers: getAuthHeaders(),
