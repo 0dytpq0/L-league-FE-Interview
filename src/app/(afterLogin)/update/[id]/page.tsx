@@ -8,7 +8,7 @@ import { NOTICE_MESSAGE } from "@/constants/message";
 import { useState } from "react";
 import TextArea from "@/app/_component/TextArea";
 import Checkbox from "@/app/_component/Checkbox";
-import SelectBox from "../_component/SelectBox";
+import SelectBox from "@/app/(afterLogin)/_component/SelectBox";
 
 export default function Create() {
   const [mainImage, setMainImage] = useState<File | null>(null);
@@ -59,7 +59,7 @@ export default function Create() {
   };
   return (
     <div>
-      <Header isMain={false} title="글 수정" />
+      <Header title="글 수정" />
       <div className="flex flex-col gap-6 mx-5">
         <Notice message={NOTICE_MESSAGE.create} containerClassName="mx-0" />
         <Input
@@ -103,7 +103,7 @@ export default function Create() {
           label="Blog 이용 정책 위반 시 글 삭제에 동의합니다."
           required
           onChange={handleAgreementChange}
-          className="mt-4 mb-6"
+          containerClassName="mt-4 mb-6"
         />
         <button
           type="button"

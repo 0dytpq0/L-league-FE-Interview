@@ -9,6 +9,7 @@ import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
 import { useBlogList, useCategories } from "@/hooks/useBlog";
 import Link from "next/link";
+import MoreButton from "./_component/MoreButton";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -98,18 +99,21 @@ export default function Main() {
             <div className="flex flex-col flex-1 gap-[6px]">
               <div className="flex justify-between items-center">
                 <Link href={`/blog/${1}`} className="text-[15.4px] font-bold">
-                  블로그 글 타이틀
+                  {blogList?.data[0]?.title || "블로그 글 타이틀"}
                 </Link>
-                <ImageWrapper
-                  src={"/icon_more.svg"}
-                  alt="more"
-                  containerClassName="relative aspect-auto w-4 h-4 mr-1"
-                  objectFit="cover"
+                <MoreButton
+                  id={blogList?.data[0]?.id || 1}
+                  onDelete={(id) => {
+                    console.log("삭제 클릭", id);
+                    // 삭제 기능 구현
+                  }}
                 />
               </div>
-              <p className="text-[12.7px] text-[#A8A8A8] font-bold">본문</p>
+              <p className="text-[12.7px] text-[#A8A8A8] font-bold">
+                {blogList?.data[0]?.content || "본문"}
+              </p>
               <span className="text-[12.7px] text-[#A8A8A8] font-bold">
-                작성일시
+                {blogList?.data[0]?.created_at || "2025.04.07 12:00"}
               </span>
             </div>
           </div>
