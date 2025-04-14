@@ -28,12 +28,10 @@ export function useCategories(params: CategoryRequest) {
       });
 
       const response = await fetch(
-        `${BASE_URL}/api/v1/categories?${queryParams}`,
+        `${BASE_URL}/api/v1/category?${queryParams}`,
         {
           method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: getAuthHeaders(),
           cache: "no-store",
         }
       );
@@ -112,5 +110,79 @@ export function useCreateBlog() {
           : "블로그 등록 중 오류가 발생했습니다."
       );
     },
+  });
+}
+
+export interface BlogListRequest {
+  category_id?: number;
+  category_name?: string;
+  title?: string;
+  page: number;
+  page_size: number;
+}
+
+export interface BlogUser {
+  id: number;
+  email: string;
+  status: string;
+  name: string;
+  phone_number: string;
+  profile_image: string;
+}
+
+export interface BlogCategory {
+  id: number;
+  name: string;
+}
+
+export interface BlogItem {
+  user: BlogUser;
+  category: BlogCategory;
+  id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  title: string;
+  main_image: string;
+  sub_image: string;
+  content: string;
+}
+
+export interface BlogListResponse {
+  count: number;
+  totalCnt: number;
+  pageCnt: number;
+  curPage: number;
+  nextPage: number;
+  previousPage: number;
+  data: BlogItem[];
+}
+
+/**
+ * 블로그 목록을 조회하는 훅
+ */
+export function useBlogList(params: BlogListRequest) {
+  return useQuery<BlogListResponse>({
+    queryKey: ["blogList", params],
+    queryFn: async () => {
+      const queryParams = new URLSearchParams({
+        category_id: params.category_id ? params.category_id.toString() : "",
+        category_name: params.category_name || "",
+        title: params.title || "",
+        page: params.page.toString(),
+        page_size: params.page_size.toString(),
+      });
+      const response = await fetch(`${BASE_URL}/api/v1/blog?${queryParams}`, {
+        method: "GET",
+        headers: getAuthHeaders(),
+
+        cache: "no-store",
+      });
+      if (!response.ok) {
+        throw new Error("블로그 목록 조회에 실패했습니다");
+      }
+      return response.json();
+    },
+    staleTime: 5 * 60 * 1000,
   });
 }

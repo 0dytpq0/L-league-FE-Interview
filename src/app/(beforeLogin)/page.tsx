@@ -7,10 +7,30 @@ import { useState } from "react";
 import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
+import { useBlogList, useCategories } from "@/hooks/useBlog";
+import Link from "next/link";
 
 export default function Main() {
-  const tabs = ["전체", "일상생활", "맛집소개", "제품후기", "IT정보"];
   const [selectedTab, setSelectedTab] = useState<number>(0);
+  const { data: categories, isPending } = useCategories({
+    page: 1,
+    page_size: 10,
+  });
+  console.log("data", categories?.data);
+  const tabs = [{ id: 0, name: "전체" }, ...(categories?.data || [])];
+
+  const { data: blogList } = useBlogList({
+    category_id: 1,
+    category_name: "일상생활",
+    title: "박요셉타이틀",
+    page: 1,
+    page_size: 10,
+  });
+  console.log("blogList", blogList);
+
+  if (isPending) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <div className="relative">
@@ -55,7 +75,7 @@ export default function Main() {
             onClick={() => setSelectedTab(index)}
           >
             <span className="text-[15.4px] text-[#737373] font-bold">
-              {tab}
+              {tab.name}
             </span>
             {selectedTab === index && (
               <div className="absolute -bottom-[5px] min-w-[35px] w-full h-[6px] bg-brand rounded-xl"></div>
@@ -68,18 +88,22 @@ export default function Main() {
       <div className="relative pb-16 mx-3">
         <div className="w-full mt-[38px] flex flex-col gap-[26px]">
           <div className="flex gap-4">
-            <div className="bg-blue-500 w-[120px] h-[120px] rounded-lg">
-              img
-            </div>
+            <ImageWrapper
+              src={blogList?.data[0]?.main_image || "/icon_main.svg"}
+              alt="mainImage"
+              href="/blog/1"
+              containerClassName="relative aspect-auto w-[120px] h-[120px] rounded-lg"
+              objectFit="contain"
+            />
             <div className="flex flex-col flex-1 gap-[6px]">
               <div className="flex justify-between items-center">
-                <span className="text-[15.4px] font-bold">
+                <Link href={`/blog/${1}`} className="text-[15.4px] font-bold">
                   블로그 글 타이틀
-                </span>
+                </Link>
                 <ImageWrapper
                   src={"/icon_more.svg"}
                   alt="more"
-                  containerClassName="relative aspect-auto w-1 h-3 mr-1"
+                  containerClassName="relative aspect-auto w-4 h-4 mr-1"
                   objectFit="cover"
                 />
               </div>

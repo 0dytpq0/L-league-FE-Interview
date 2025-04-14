@@ -1,6 +1,6 @@
 "use client";
 
-import DetailHeader from "../_component/DetailHeader";
+import DetailHeader from "../../_component/DetailHeader";
 
 export default function Detail() {
   return (
