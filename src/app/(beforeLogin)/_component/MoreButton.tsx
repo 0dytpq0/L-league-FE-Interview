@@ -57,7 +57,7 @@ export default function MoreButton({ id, onDelete }: MoreButtonProps) {
       </button>
       <div
         className={cn(
-          `absolute w-20 right-0 mt-1 bg-white shadow-md rounded-md overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 transform -translate-y-2 ${
+          `absolute w-20 z-10 right-0 mt-1 bg-white shadow-md rounded-md overflow-hidden transition-all duration-200 ease-in-out max-h-0 opacity-0 transform -translate-y-2 ${
             isOpen &&
             "max-h-24 opacity-100 transform translate-y-0 pointer-events-auto"
           }`

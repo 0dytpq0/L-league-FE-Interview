@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import ImageWrapper from "@/app/_component/ImageWrapper";
 import MoreButton from "./MoreButton";
-import { BlogItem } from "@/hooks/useBlog";
+import { BlogItem, useDeleteBlog } from "@/hooks/useBlog";
 import dayjs from "dayjs";
 
 interface BlogListItemProps {
@@ -13,8 +15,15 @@ interface BlogListItemProps {
  */
 export default function BlogListItem({ blog }: BlogListItemProps) {
   const { id, title, content, main_image, created_at } = blog || {};
+
+  const { mutate: deleteBlog } = useDeleteBlog();
+
   const handleDelete = () => {
-    console.log("삭제 클릭", id);
+    if (!id) return;
+
+    if (confirm("정말로 이 글을 삭제하시겠습니까?")) {
+      deleteBlog(id);
+    }
   };
   return (
     <div className="flex gap-4">

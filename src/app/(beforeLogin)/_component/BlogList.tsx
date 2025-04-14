@@ -1,8 +1,11 @@
+"use client";
+
 import { BlogItem, BlogListResponse } from "@/hooks/useBlog";
 import BlogListItem from "./BlogListItem";
 
 interface BlogListProps {
   blogList: BlogListResponse | undefined;
+  onRefresh?: () => void;
 }
 
 /**

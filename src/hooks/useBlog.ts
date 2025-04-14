@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadImageToS3 } from "@/app/(afterLogin)/_utils/awsUpload";
 import { getAuthHeaders } from "@/utils/cookies";
 import {
@@ -51,6 +51,7 @@ export function useCategories(params: CategoryRequest) {
  */
 export function useCreateBlog() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   return useMutation<BlogCreateResponse, Error, BlogFormData>({
     mutationFn: async (formData: BlogFormData) => {
       // 유효성 검사
@@ -98,6 +99,7 @@ export function useCreateBlog() {
     },
     onSuccess: (res) => {
       alert("블로그가 성공적으로 등록되었습니다!");
+      queryClient.invalidateQueries({ queryKey: ["blogList"] });
       router.replace(`/blog/${res.id}`);
     },
     onError: (error) => {
@@ -182,5 +184,38 @@ export function useBlogList(params: BlogListRequest) {
       return response.json();
     },
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * 블로그 삭제 훅
+ */
+export function useDeleteBlog() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (blogId: number) => {
+      const response = await fetch(`${BASE_URL}/api/v1/blog/${blogId}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
+
+      if (!response.ok) {
+        throw new Error("블로그 삭제에 실패했습니다");
+      }
+
+      return response.status === 204 ? true : await response.json();
+    },
+    onSuccess: () => {
+      alert("블로그가 성공적으로 삭제되었습니다!");
+      queryClient.invalidateQueries({ queryKey: ["blogList"] });
+    },
+    onError: (error) => {
+      console.error("블로그 삭제 중 오류 발생:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "블로그 삭제 중 오류가 발생했습니다."
+      );
+    },
   });
 }

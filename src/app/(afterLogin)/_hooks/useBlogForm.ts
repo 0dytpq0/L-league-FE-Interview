@@ -15,7 +15,6 @@ export function useBlogForm() {
   const contentRef = useRef<HTMLTextAreaElement>(null);
 
   const { mutate: createBlog, isPending } = useCreateBlog();
-  console.log("selectedCategory", selectedCategory);
   const handleMainImageChange = (file: File | null) => {
     setMainImage(file);
   };
@@ -33,7 +32,6 @@ export function useBlogForm() {
   };
 
   const handleSubmit = async () => {
-    // 이용 정책 동의 검사
     if (!isAgreed) {
       alert("Blog 이용 정책 동의가 필요합니다.");
       return;
@@ -42,7 +40,6 @@ export function useBlogForm() {
     const title = titleRef.current?.value || "";
     const content = contentRef.current?.value || "";
 
-    // 폼 데이터 구성
     const formData: BlogFormData = {
       title,
       content,
@@ -50,8 +47,7 @@ export function useBlogForm() {
       subImage,
       category: selectedCategory || 5,
     };
-    console.log("formData", formData);
-    // 유효성 검사
+
     const validationError = validateBlogForm(formData);
     if (validationError) {
       alert(validationError);
