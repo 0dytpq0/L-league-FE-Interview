@@ -62,8 +62,8 @@ export interface BlogCreateResponse {
 export interface BlogFormData {
   title: string;
   content: string;
-  mainImage: File | null;
-  subImage: File | null;
+  mainImage: File | string | null;
+  subImage: File | string | null;
   category: number;
 }
 

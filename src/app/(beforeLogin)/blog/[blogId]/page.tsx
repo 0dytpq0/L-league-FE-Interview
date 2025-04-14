@@ -42,7 +42,7 @@ export default function Detail({
           작성일시: {dayjs(blog.created_at).format("YYYY.MM.DD HH:mm")}
         </span>
         <p className="text-gray font-bold text-[12.7px]">{blog.content}</p>
-        {blog.sub_image && (
+        {/* {blog.sub_image && (
           <div className="w-full rounded-lg mx-[2px] mt-4 overflow-hidden">
             <ImageWrapper
               src={blog.sub_image}
@@ -52,7 +52,7 @@ export default function Detail({
               imageClassName="rounded-lg"
             />
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

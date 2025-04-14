@@ -14,8 +14,8 @@ export function useBlogForm({
   isUpdate = false,
   blogId,
 }: UseBlogFormProps = {}) {
-  const [mainImage, setMainImage] = useState<File | null>(null);
-  const [subImage, setSubImage] = useState<File | null>(null);
+  const [mainImage, setMainImage] = useState<File | string | null>(null);
+  const [subImage, setSubImage] = useState<File | string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -23,11 +23,11 @@ export function useBlogForm({
   const { mutate: createBlog, isPending: isCreatePending } = useCreateBlog();
   const { mutate: updateBlog, isPending: isUpdatePending } = useUpdateBlog();
   const isPending = isUpdate ? isUpdatePending : isCreatePending;
-  const handleMainImageChange = (file: File | null) => {
+  const handleMainImageChange = (file: File | string | null) => {
     setMainImage(file);
   };
 
-  const handleSubImageChange = (file: File | null) => {
+  const handleSubImageChange = (file: File | string | null) => {
     setSubImage(file);
   };
 
@@ -56,7 +56,7 @@ export function useBlogForm({
       category: selectedCategory || 5,
     };
 
-    const validationError = validateBlogForm(formData);
+    const validationError = validateBlogForm(formData, isUpdate);
     if (validationError) {
       alert(validationError);
       return;

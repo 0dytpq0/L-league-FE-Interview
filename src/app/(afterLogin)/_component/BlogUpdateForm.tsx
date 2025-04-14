@@ -40,8 +40,15 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
   });
   useEffect(() => {
     handleCategoryChange(blog?.category.id || 0);
+    handleMainImageChange(blog?.main_image as string);
+    handleSubImageChange(blog?.sub_image as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blog]);
+
+  const isExistingImg = () => {
+    return !mainImage || !blog?.main_image;
+  };
+
   if (isLoading) {
     return (
       <div className="w-full mt-[38px] flex justify-center">
@@ -49,6 +56,7 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
       </div>
     );
   }
+
   return (
     <div className="flex flex-col gap-6 mx-5">
       <Input
@@ -104,7 +112,7 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
       <SubmitButton
         onClick={handleSubmit}
         isPending={isPending}
-        isDisabled={!mainImage || !selectedCategory || !isAgreed}
+        isDisabled={isExistingImg() || !selectedCategory || !isAgreed}
         size="lg"
         isFullWidth
         pendingText="제출 중..."

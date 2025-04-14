@@ -10,6 +10,7 @@ import {
   BlogItem,
   BlogListRequest,
   BlogListResponse,
+  BlogUpdateRequest,
   CategoryRequest,
   CategoryResponse,
 } from "@/types/blog";
@@ -63,12 +64,15 @@ export function useCreateBlog() {
       }
 
       // 이미지 업로드
-      const mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
+      const mainImageUrl = await uploadImageToS3(
+        formData.mainImage as File,
+        "main_"
+      );
 
       // 서브 이미지 처리
       let subImageUrl = null;
       if (formData.subImage) {
-        subImageUrl = await uploadImageToS3(formData.subImage, "sub_");
+        subImageUrl = await uploadImageToS3(formData.subImage as File, "sub_");
       }
 
       // 카테고리 ID 찾기
@@ -215,18 +219,22 @@ export function useUpdateBlog() {
     mutationFn: async ({ blog_id, ...formData }) => {
       // 이미지 업로드 처리
       console.log("blog_id, formData", blog_id, formData);
-      const mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
+      //이곳에 mainImage, subImage가 File 타입인지 확인 후 아니라면 전달받은 데이터 그대로 유지
+      let mainImageUrl = formData.mainImage;
+      if (formData.mainImage instanceof File) {
+        mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
+      }
 
       // 서브 이미지 처리
       let subImageUrl = null;
 
-      if (formData.subImage) {
+      if (formData.subImage instanceof File) {
         subImageUrl = await uploadImageToS3(formData.subImage, "sub_");
       }
       const requestData: BlogCreateRequest = {
         category: formData.category,
         title: formData.title,
-        main_image: mainImageUrl,
+        main_image: mainImageUrl as string,
         content: formData.content,
       };
       if (subImageUrl) {
@@ -264,12 +272,4 @@ export function useUpdateBlog() {
       );
     },
   });
-}
-
-interface BlogUpdateRequest {
-  category: number;
-  title: string;
-  mainImage: File | null;
-  subImage: File | null;
-  content: string;
 }
