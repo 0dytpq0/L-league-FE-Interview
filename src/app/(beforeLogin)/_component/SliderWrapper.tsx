@@ -4,12 +4,10 @@ import "swiper/css/pagination";
 
 import { Swiper } from "swiper/react";
 
-function SliderWrapper({ children }: PropsWithChildren) {
+export default function SliderWrapper({ children }: PropsWithChildren) {
   return (
-    <Swiper slidesPerView={3} spaceBetween={14} className="w-full h-full">
+    <Swiper spaceBetween={14} wrapperClass="h-full mx-4 ">
       {children}
     </Swiper>
   );
 }
-
-export default SliderWrapper;

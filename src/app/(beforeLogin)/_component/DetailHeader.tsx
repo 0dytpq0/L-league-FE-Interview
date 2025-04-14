@@ -1,24 +1,24 @@
-"use client";
-
 import Header from "@/app/_component/Header";
 import BackButton from "@/app/_component/BackButton";
+import Link from "next/link";
 
 interface DetailHeaderProps {
   title: string;
+  blogId: number;
 }
 
-export default function DetailHeader({ title }: DetailHeaderProps) {
+export default function DetailHeader({ title, blogId }: DetailHeaderProps) {
   return (
     <Header
       title={title}
       leftComponent={<BackButton />}
       rightComponent={
-        <button
+        <Link
+          href={`/update/${blogId}`}
           className="text-[15.4px] font-bold bg-transparent border-0 cursor-pointer"
-          aria-label="수정하기"
         >
           수정
-        </button>
+        </Link>
       }
     />
   );

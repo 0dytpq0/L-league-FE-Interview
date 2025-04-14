@@ -2,7 +2,11 @@
 
 import { AUTH_QUERY_KEY } from "@/constants/queryKey";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAuthHeaders, removeTokenFromCookie, saveTokenToCookie } from "@/utils/cookies";
+import {
+  getAuthHeaders,
+  removeTokenFromCookie,
+  saveTokenToCookie,
+} from "@/utils/cookies";
 
 export interface LoginRequest {
   email: string;

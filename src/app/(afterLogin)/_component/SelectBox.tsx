@@ -7,9 +7,9 @@ import { useState } from "react";
 interface SelectBoxProps {
   id: string;
   label: string;
-  options: string[];
-  selectedOption: string;
-  onChange: (option: string) => void;
+  options: { id: number; name: string }[];
+  selectedOption: number | null;
+  onChange: (option: number) => void;
   required?: boolean;
   labelClassName?: string;
   selectBoxClassName?: string;
@@ -35,7 +35,7 @@ export default function SelectBox({
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleCategorySelect = (category: string) => {
+  const handleCategorySelect = (category: number) => {
     onChange(category);
     setIsDropdownOpen(false);
   };
@@ -63,7 +63,9 @@ export default function SelectBox({
               `w-full h-[60px] rounded-[10px] px-4 text-[15px] outline-none bg-input text-gray font-bold flex items-center justify-between ${selectBoxClassName}`
             )}
           >
-            {selectedOption || "카테고리 선택"}
+            {selectedOption
+              ? options.find((option) => option.id === selectedOption)?.name
+              : "카테고리 선택"}
             <ImageWrapper
               src="/icon_downarrow.svg"
               alt="화살표"
@@ -81,15 +83,15 @@ export default function SelectBox({
               )}
             >
               {options.map((option) => (
-                <li key={option}>
+                <li key={option.id}>
                   <button
                     type="button"
-                    onClick={() => handleCategorySelect(option)}
+                    onClick={() => handleCategorySelect(option.id)}
                     className={cn(
                       `option-btn w-full text-left px-4 text-gray font-bold py-3 text-[15px] cursor-pointer hover:bg-white hover:brightness-90 ${optionClassName}`
                     )}
                   >
-                    {option}
+                    {option.name}
                   </button>
                 </li>
               ))}

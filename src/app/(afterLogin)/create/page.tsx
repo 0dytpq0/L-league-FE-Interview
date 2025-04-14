@@ -1,8 +1,8 @@
-import Notice from "@/app/(beforeLogin)/_component/Notice";
 import Header from "@/app/_component/Header";
 import BackButton from "@/app/_component/BackButton";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import BlogCreateForm from "../_component/BlogCreateForm";
+import Notice from "@/app/(beforeLogin)/_component/Notice";
 
 export default function Create() {
   return (
