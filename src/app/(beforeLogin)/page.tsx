@@ -1,8 +1,6 @@
 "use client";
 import Footer from "./_component/Footer";
-import SliderWrapper from "./_component/SliderWrapper";
 import Notice from "./_component/Notice";
-import { SwiperSlide } from "swiper/react";
 import { useMemo, useState } from "react";
 import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
@@ -10,6 +8,7 @@ import ImageWrapper from "../_component/ImageWrapper";
 import { useCategories } from "@/hooks/useBlog";
 import BlogList from "./_component/BlogList";
 import TabMenu from "./_component/TabMenu";
+import TopViewsSlider from "./_component/TopViewsSlider";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -54,13 +53,7 @@ export default function Main() {
         />
       </div>
       {/* 조회수 슬라이드 */}
-      <SliderWrapper>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <SwiperSlide key={index}>
-            <div className="w-[120px] h-[206px] bg-green-500 rounded-lg"></div>
-          </SwiperSlide>
-        ))}
-      </SliderWrapper>
+      <TopViewsSlider limit={10} />
       {/* 탭  */}
       <TabMenu
         tabs={tabs}
