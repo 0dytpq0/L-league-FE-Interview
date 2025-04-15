@@ -9,9 +9,17 @@ import { useCategories } from "@/hooks/useBlog";
 import BlogList from "./_component/BlogList";
 import TabMenu from "./_component/TabMenu";
 import TopViewsSlider from "./_component/TopViewsSlider";
+import { useRouter, useSearchParams } from "next/navigation";
+import SearchModal from "./_component/SearchModal";
+import Link from "next/link";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchTitle = searchParams.get("title");
+
   const { data: categories, isPending } = useCategories({
     page: 1,
     page_size: 10,
@@ -28,10 +36,30 @@ export default function Main() {
     return <div>로딩중...</div>;
   }
 
+  // 검색 기능 처리
+  const handleSearchClick = () => {
+    setIsSearchModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsSearchModalOpen(false);
+  };
+
+  const handleSearch = (searchTerm: string) => {
+    router.push(`/?title=${encodeURIComponent(searchTerm)}`);
+  };
+
   return (
     <div className="relative">
+      {/* 검색 모달 */}
+      <SearchModal
+        isOpen={isSearchModalOpen}
+        onClose={handleCloseModal}
+        onSearch={handleSearch}
+      />
+
       {/* header */}
-      <MainHeader title="BLOG" />
+      <MainHeader title="BLOG" onSearchClick={handleSearchClick} />
 
       {/* 공지 */}
       <Notice message={NOTICE_MESSAGE.main} label="공지" />
@@ -61,9 +89,30 @@ export default function Main() {
         onTabChange={setSelectedTab}
       />
 
-      {/* 블로그 글 목록 */}
+      {searchTitle && (
+        <div className="flex items-center justify-between mx-3 mt-4 p-3 bg-blue-50 rounded-lg">
+          <p className="text-blue-700 font-medium flex items-center">
+            <ImageWrapper
+              src="/icon_search.svg"
+              alt="search"
+              containerClassName="w-5 h-5 mr-2"
+              objectFit="contain"
+            />
+            <span>{`"${searchTitle}" 검색 결과`}</span>
+          </p>
+          <Link href={`/`} className="text-blue-700 font-bold">
+            전체보기
+          </Link>
+        </div>
+      )}
+
       <div className="relative pb-16 mx-3">
-        <BlogList selectedTab={selectedTab} tabs={tabs} pageSize={10} />
+        <BlogList
+          selectedTab={selectedTab}
+          tabs={tabs}
+          pageSize={10}
+          title={searchTitle || undefined}
+        />
       </div>
 
       <Footer />

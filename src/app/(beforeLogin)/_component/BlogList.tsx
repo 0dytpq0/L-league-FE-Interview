@@ -12,6 +12,7 @@ interface BlogListProps {
   tabs?: { id: number; name: string }[];
   pageSize?: number;
   onPageChange?: (page: number) => void;
+  title?: string; // 검색어 추가
 }
 
 /**
@@ -22,6 +23,7 @@ export default function BlogList({
   tabs = [],
   pageSize = 10,
   onPageChange,
+  title,
 }: BlogListProps) {
   // 페이지 상태 관리
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,9 +33,17 @@ export default function BlogList({
     page: currentPage,
     page_size: pageSize,
   };
+
+  // 카테고리 필터링
   if (selectedTab !== undefined && selectedTab !== 0) {
     params.category_id = selectedTab;
   }
+
+  // 검색어가 있는 경우 파라미터에 추가
+  if (title && title.trim() !== "") {
+    params.title = title.trim();
+  }
+
   const { data: blogList, isLoading } = useBlogList(params);
 
   // 페이지 변경 핸들러
@@ -76,7 +86,11 @@ export default function BlogList({
   if (!filteredBlogList?.data || filteredBlogList.data.length === 0) {
     return (
       <div className="w-full mt-[38px] flex flex-col gap-[26px]">
-        <p className="text-center text-gray-500">등록된 블로그가 없습니다.</p>
+        <p className="text-center text-gray-500">
+          {title
+            ? `'${title}' 검색 결과가 없습니다.`
+            : "등록된 블로그가 없습니다."}
+        </p>
       </div>
     );
   }
