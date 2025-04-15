@@ -62,7 +62,11 @@ export default function Main() {
       <MainHeader title="BLOG" onSearchClick={handleSearchClick} />
 
       {/* 공지 */}
-      <Notice message={NOTICE_MESSAGE.main} label="공지" />
+      <Notice
+        message={NOTICE_MESSAGE.main}
+        label="공지"
+        containerClassName="min-w-[390px] whitespace-nowrap"
+      />
 
       {/* 조회수 TOP 10 */}
       <div className="flex items-center gap-1 py-[10px] mx-3">

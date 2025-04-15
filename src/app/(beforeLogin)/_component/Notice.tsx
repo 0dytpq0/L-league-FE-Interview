@@ -25,13 +25,14 @@ export default function Notice({
   return (
     <div
       className={cn(
-        "flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-5",
+        "flex bg-[#FEF3EF] gap-2 items-center rounded-2xl py-[2px] mx-5 tablet:mx-8 ",
         containerClassName
       )}
+      aria-label="공지"
     >
       <div
         className={cn(
-          "flex gap-[2px] items-center border-2 border-brand rounded-2xl py-[5px] px-[8px] bg-white",
+          "flex gap-[2px] items-center border-2 border-brand rounded-2xl py-[5px] px-[8px] bg-white tablet:py-[7px] tablet:px-[10px] flex-nowrap",
           iconContainerClassName
         )}
       >
