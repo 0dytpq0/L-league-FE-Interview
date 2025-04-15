@@ -25,7 +25,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export function useCategories(params: CategoryRequest) {
   // queryKey를 정확히 일치시키기 위해 파라미터를 새 객체로 바꾸지 않고 원시 값을 사용
   return useQuery<CategoryResponse, Error, { id: number; name: string }[]>({
-    queryKey: [QUERY_KEYS.CATEGORIES, { page: params.page, page_size: params.page_size }],
+    queryKey: [
+      QUERY_KEYS.CATEGORIES,
+      { page: params.page, page_size: params.page_size },
+    ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         page: params.page.toString(),
@@ -186,7 +189,7 @@ export function useDeleteBlog() {
  */
 export function useDetailBlog(blogId: number) {
   return useQuery<BlogItem>({
-    queryKey: ["blog", blogId],
+    queryKey: [QUERY_KEYS.BLOG_DETAIL, blogId],
     queryFn: async () => {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/blog/${blogId}`,

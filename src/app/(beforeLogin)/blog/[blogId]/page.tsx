@@ -1,65 +1,17 @@
-"use client";
+import DetailForm from "../_component/DetailForm";
 
-import ImageWrapper from "@/app/_component/ImageWrapper";
-import dayjs from "dayjs";
-import { use } from "react";
-import { useDetailBlog } from "@/hooks/useBlog";
-import DetailHeader from "../_component/DetailHeader";
+interface Props {
+  params: { blogId: string; isCreated: string };
+}
 
-// 클라이언트 컴포넌트
-export default function Detail({
-  params,
-}: {
-  params: Promise<{ blogId: string }>;
-}) {
-  // React.use()로 params 래핑하여 사용
-  const { blogId } = use(params);
-
-  const isCreated = new URLSearchParams(window.location.search).get("created");
-
-  const { data: blog, isLoading } = useDetailBlog(Number(blogId));
-  if (isLoading) {
-    return <div className="flex justify-center p-10">로딩 중...</div>;
-  }
-  if (!blog) {
-    return (
-      <div className="flex justify-center p-10">
-        블로그 정보를 찾을 수 없습니다.
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <DetailHeader title={blog.title} blogId={blog.id} isCreated={isCreated} />
-
-      <div className="flex flex-col gap-4 mx-5">
-        <div className="w-full h-[210px] rounded-lg mx-[2px] overflow-hidden">
-          <ImageWrapper
-            src={blog.main_image || "엠프티 이미지"}
-            alt={blog.title || "게시글 이미지"}
-            containerClassName="w-full h-full relative"
-            objectFit="cover"
-            imageClassName="rounded-lg"
-          />
-        </div>
-        <span className="text-gray text-[12.7px]">
-          작성일시: {dayjs(blog.created_at).format("YYYY.MM.DD HH:mm")}
-        </span>
-        <p className="text-gray font-bold text-[12.7px]">{blog.content}</p>
-        {/* {blog.sub_image && (
-
-          <div className="w-full rounded-lg mx-[2px] mt-4 overflow-hidden">
-            <ImageWrapper
-              src={blog.sub_image}
-              alt="서브 이미지"
-              containerClassName="w-full h-[210px] relative"
-              objectFit="cover"
-              imageClassName="rounded-lg"
-            />
-          </div>
-        )} */}
-      </div>
-    </>
-  );
+export default async function Detail({ params }: Props) {
+  const { blogId, isCreated } = params;
+  // 401 에러
+  // await fetch(`${process.env.API_URL}/api/v1/blog/${blogId}`, {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   cache: "no-store",
+  // }).then((res) => console.log("res", res));
+  return <DetailForm blogId={Number(blogId)} isCreated={isCreated} />;
 }

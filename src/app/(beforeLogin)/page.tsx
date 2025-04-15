@@ -51,6 +51,7 @@ export async function getCategories() {
 }
 
 export default async function Main({ params }: Props) {
+  const { title } = params;
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery<
     CategoryResponse,
@@ -61,7 +62,7 @@ export default async function Main({ params }: Props) {
     queryFn: getCategories,
   });
   const dehydratedState = dehydrate(queryClient);
-  const searchTitle = params.title;
+  const searchTitle = title;
 
   return (
     <div className="relative">
