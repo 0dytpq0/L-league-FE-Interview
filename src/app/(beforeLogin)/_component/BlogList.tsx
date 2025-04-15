@@ -33,17 +33,17 @@ export default function BlogList({
     page: currentPage,
     page_size: pageSize,
   };
-  
+
   // 카테고리 필터링
   if (selectedTab !== undefined && selectedTab !== 0) {
     params.category_id = selectedTab;
   }
-  
+
   // 검색어가 있는 경우 파라미터에 추가
-  if (title && title.trim() !== '') {
+  if (title && title.trim() !== "") {
     params.title = title.trim();
   }
-  
+
   const { data: blogList, isLoading } = useBlogList(params);
 
   // 페이지 변경 핸들러
@@ -87,7 +87,9 @@ export default function BlogList({
     return (
       <div className="w-full mt-[38px] flex flex-col gap-[26px]">
         <p className="text-center text-gray-500">
-          {title ? `'${title}' 검색 결과가 없습니다.` : '등록된 블로그가 없습니다.'}
+          {title
+            ? `'${title}' 검색 결과가 없습니다.`
+            : "등록된 블로그가 없습니다."}
         </p>
       </div>
     );
