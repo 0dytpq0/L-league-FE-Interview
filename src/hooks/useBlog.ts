@@ -22,7 +22,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
  * 카테고리 목록을 조회하는 훅
  */
 export function useCategories(params: CategoryRequest) {
-  return useQuery<CategoryResponse>({
+  return useQuery<CategoryResponse, Error, { id: number; name: string }[]>({
     queryKey: ["categories", params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
@@ -34,7 +34,7 @@ export function useCategories(params: CategoryRequest) {
         `${BASE_URL}/api/v1/category?${queryParams}`,
         {
           method: "GET",
-          headers: getAuthHeaders(),
+          // headers: getAuthHeaders(),
           cache: "no-store",
         }
       );
@@ -45,6 +45,10 @@ export function useCategories(params: CategoryRequest) {
 
       return response.json();
     },
+    select: (data) => [
+      { id: 0, name: "전체" },
+      ...(data?.data.filter((c) => c.id !== 5) || []),
+    ],
   });
 }
 
@@ -115,6 +119,7 @@ export function useCreateBlog() {
  * 블로그 목록을 조회하는 훅
  */
 export function useBlogList(params: BlogListRequest) {
+  console.log("params", params);
   return useQuery<BlogListResponse>({
     queryKey: ["blogList", params],
     queryFn: async () => {

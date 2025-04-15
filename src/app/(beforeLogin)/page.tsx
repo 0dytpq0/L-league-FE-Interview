@@ -1,62 +1,71 @@
-"use client";
 import Footer from "./_component/Footer";
 import Notice from "./_component/Notice";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense } from "react";
 import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
-import { useCategories } from "@/hooks/useBlog";
 import BlogList from "./_component/BlogList";
-import TabMenu from "./_component/TabMenu";
 import TopViewsSlider from "./_component/TopViewsSlider";
-import { useRouter, useSearchParams } from "next/navigation";
-import SearchModal from "./_component/SearchModal";
 import Link from "next/link";
 import Loading from "../loading";
+import TabMenu from "./_component/TabMenu";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { CategoryResponse } from "@/types/blog";
 
-export default function Main() {
-  const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const searchTitle = searchParams.get("title");
+// // 메타데이터 생성 함수
+// export async function generateMetadata({ params }: Props) {
+//   const title = params.title ? `"${params.title}" 검색 결과 - BLOG` : "BLOG";
 
-  const { data: categories } = useCategories({
-    page: 1,
-    page_size: 10,
-  });
-  const tabs = useMemo(
-    () => [
-      { id: 0, name: "전체" },
-      ...(categories?.data.filter((c) => c.id !== 5) || []),
-    ],
-    [categories?.data]
+//   return {
+//     title,
+//     description: "L-league 블로그에 오신 것을 환영합니다.",
+//   };
+// }
+
+interface Props {
+  params: {
+    tab?: string;
+    title?: string;
+  };
+}
+
+// 서버 컴포넌트에서 카테고리 데이터 가져오기
+export async function getCategories() {
+  const response = await fetch(
+    `${process.env.API_URL}/api/v1/category?page=1&page_size=10`,
+    {
+      method: "GET",
+      cache: "no-store",
+    }
   );
 
-  // 검색 기능 처리
-  const handleSearchClick = () => {
-    setIsSearchModalOpen(true);
-  };
+  if (!response.ok) {
+    throw new Error("카테고리 데이터 패칭 실패");
+  }
+  return response.json();
+}
 
-  const handleCloseModal = () => {
-    setIsSearchModalOpen(false);
-  };
-
-  const handleSearch = (searchTerm: string) => {
-    router.push(`/?title=${encodeURIComponent(searchTerm)}`);
-  };
+export default async function Main({ params }: Props) {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery<
+    CategoryResponse,
+    Error,
+    { id: number; name: string }[]
+  >({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
+  const dehydratedState = dehydrate(queryClient);
+  const searchTitle = params.title;
 
   return (
     <div className="relative">
-      {/* 검색 모달 */}
-      <SearchModal
-        isOpen={isSearchModalOpen}
-        onClose={handleCloseModal}
-        onSearch={handleSearch}
-      />
-
-      {/* header */}
-      <MainHeader title="BLOG" onSearchClick={handleSearchClick} />
+      {/* header - 검색 모달 포함 (클라이언트 컴포넌트) */}
+      <MainHeader title="BLOG" />
 
       {/* 공지 */}
       <Notice
@@ -85,13 +94,9 @@ export default function Main() {
       <Suspense fallback={<Loading />}>
         <TopViewsSlider limit={10} />
       </Suspense>
-
-      {/* 탭  */}
-      <TabMenu
-        tabs={tabs}
-        selectedTab={selectedTab}
-        onTabChange={setSelectedTab}
-      />
+      <HydrationBoundary state={dehydratedState}>
+        <TabMenu />
+      </HydrationBoundary>
 
       {searchTitle && (
         <div className="flex items-center justify-between mx-3 mt-4 p-3 bg-blue-50 rounded-lg">
@@ -111,12 +116,7 @@ export default function Main() {
       )}
 
       <Suspense fallback={<Loading />}>
-        <BlogList
-          selectedTab={selectedTab}
-          tabs={tabs}
-          pageSize={10}
-          title={searchTitle || undefined}
-        />
+        <BlogList pageSize={10} title={searchTitle} />
       </Suspense>
       <Footer />
     </div>
