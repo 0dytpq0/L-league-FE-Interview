@@ -13,6 +13,7 @@ import { getCategories } from "@/services/getCategories";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 import { Metadata, ResolvingMetadata } from "next";
+import { getBlogDetail } from "@/services/getBlogDetail";
 
 interface Props {
   params: {
@@ -21,25 +22,6 @@ interface Props {
 }
 
 // 블로그 데이터 가져오기 함수
-async function getBlogDetail(blogId: string) {
-  try {
-    const response = await fetch(`${process.env.API_URL}/api/v1/blog/${blogId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: { tags: [QUERY_KEYS.BLOG_DETAIL, blogId] },
-    });
-    
-    if (!response.ok) {
-      return null;
-    }
-    
-    return await response.json();
-  } catch (error) {
-    console.error("블로그 상세 정보 가져오기 실패:", error);
-    return null;
-  }
-}
 
 // 동적 메타데이터 생성
 export async function generateMetadata(
@@ -47,35 +29,37 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { blogId } = params;
-  
+
   // 부모 메타데이터에서 기본 이미지 가져오기
   const previousImages = (await parent).openGraph?.images || [];
-  
+
   // 블로그 데이터 가져오기
   const blog = await getBlogDetail(blogId);
-  
+
   if (!blog) {
     return {
       title: "글 수정 - 블로그 글을 찾을 수 없습니다",
       description: "요청하신 블로그 글을 찾을 수 없습니다.",
     };
   }
-  
+
   return {
     title: `글 수정 - ${blog.title}`,
     description: `${blog.title} 글을 수정합니다.`,
     openGraph: {
       title: `글 수정 - ${blog.title}`,
       description: `L-League 블로그에서 ${blog.title} 글을 수정합니다.`,
-      images: blog.main_image ? [
-        {
-          url: blog.main_image,
-          width: 1200,
-          height: 630,
-          alt: blog.title,
-        },
-        ...previousImages,
-      ] : ['/og-update.png', ...previousImages],
+      images: blog.main_image
+        ? [
+            {
+              url: blog.main_image,
+              width: 1200,
+              height: 630,
+              alt: blog.title,
+            },
+            ...previousImages,
+          ]
+        : ["/og-update.png", ...previousImages],
     },
   };
 }
@@ -87,6 +71,12 @@ export default async function Update({ params }: Props) {
     queryKey: [QUERY_KEYS.CATEGORIES, { page: 1, page_size: 10 }],
     queryFn: async () => await getCategories({ page: 1, page_size: 10 }),
   });
+
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.BLOG_DETAIL, blogId],
+    queryFn: () => getBlogDetail(blogId),
+  });
+
   const dehydratedState = dehydrate(queryClient);
   return (
     <div>
@@ -95,7 +85,7 @@ export default async function Update({ params }: Props) {
         <Notice message={NOTICE_MESSAGE.create} containerClassName="mx-0" />
         <HydrationBoundary state={dehydratedState}>
           <Suspense fallback={<Loading />}>
-            <BlogUpdateForm blogId={Number(blogId)} />
+            <BlogUpdateForm blogId={blogId} />
           </Suspense>
         </HydrationBoundary>
       </div>

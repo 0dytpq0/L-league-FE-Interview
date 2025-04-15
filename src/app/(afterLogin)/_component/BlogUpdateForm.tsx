@@ -13,7 +13,7 @@ import { useEffect, useMemo } from "react";
 import Loading from "@/app/loading";
 
 interface BlogUpdateFormProps {
-  blogId: number;
+  blogId: string;
 }
 
 export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
@@ -31,9 +31,9 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
     handleSubmit,
   } = useBlogForm({
     isUpdate: true,
-    blogId,
+    blogId: Number(blogId),
   });
-  const { data: blog, isLoading } = useDetailBlog(Number(blogId));
+  const { data: blog, isLoading } = useDetailBlog(blogId);
   useBackConfirm();
 
   const { data: categories } = useCategories({
