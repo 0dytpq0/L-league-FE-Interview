@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 interface TQProviderProps {
   children: React.ReactNode;
@@ -19,10 +18,5 @@ export default function TQProvider({ children }: TQProviderProps) {
     })
   );
 
-  return (
-    <QueryClientProvider client={client}>
-      {children}
-      <ReactQueryDevtools />
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }

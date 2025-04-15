@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useLogout } from "@/hooks/useAuth";
 import ImageWrapper from "@/app/_component/ImageWrapper";
+import { getTokenFromCookie } from "@/utils/cookies";
 
-export default function LogoutButton() {
+export default function AuthButton() {
   const router = useRouter();
   const { mutate: logout, isPending } = useLogout();
-
+  const token = getTokenFromCookie();
   const handleLogout = () => {
     logout(undefined, {
       onSuccess: () => {
@@ -19,10 +20,12 @@ export default function LogoutButton() {
       },
     });
   };
-
+  const handleLogin = () => {
+    router.push("/login");
+  };
   return (
     <div
-      onClick={handleLogout}
+      onClick={token ? handleLogout : handleLogin}
       className={isPending ? "opacity-50 cursor-wait" : "cursor-pointer"}
     >
       <ImageWrapper
