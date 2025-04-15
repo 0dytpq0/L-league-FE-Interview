@@ -95,7 +95,7 @@ export default function Main() {
 
       {searchTitle && (
         <div className="flex items-center justify-between mx-3 mt-4 p-3 bg-blue-50 rounded-lg">
-          <p className="text-blue-700 font-medium flex items-center">
+          <div className="text-blue-700 font-medium flex items-center">
             <ImageWrapper
               src="/icon_search.svg"
               alt="search"
@@ -103,21 +103,21 @@ export default function Main() {
               objectFit="contain"
             />
             <span>{`"${searchTitle}" 검색 결과`}</span>
-          </p>
+          </div>
           <Link href={`/`} className="text-blue-700 font-bold">
             전체보기
           </Link>
         </div>
       )}
 
-      <div className="relative pb-16 mx-3">
+      <Suspense fallback={<Loading />}>
         <BlogList
           selectedTab={selectedTab}
           tabs={tabs}
           pageSize={10}
           title={searchTitle || undefined}
         />
-      </div>
+      </Suspense>
       <Footer />
     </div>
   );

@@ -14,7 +14,7 @@ export default function TabMenu({
       {tabs.map((tab, index) => (
         <div
           key={index}
-          className="relative min-w-[35px] text-center cursor-pointer"
+          className="relative min-w-[35px] tablet:min-w-[45px] text-center cursor-pointer"
           onClick={() => onTabChange(index)}
         >
           <span className="text-[15.4px] tablet:text-[17.4px] text-[#737373] font-bold">

@@ -96,7 +96,7 @@ export default function BlogList({
   }
 
   return (
-    <div className="w-full">
+    <div className="relative pb-16 mx-3 tablet:mx-7 ">
       <div className="scroll-hide w-full mt-[38px] flex flex-col gap-[26px] max-h-[400px] overflow-y-auto">
         {filteredBlogList.data.map((blog: BlogItem) => (
           <BlogListItem key={blog.id} blog={blog} />
