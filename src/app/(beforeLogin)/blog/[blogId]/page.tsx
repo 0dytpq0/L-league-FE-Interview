@@ -1,10 +1,10 @@
 "use client";
 
-import DetailHeader from "../../_component/DetailHeader";
 import ImageWrapper from "@/app/_component/ImageWrapper";
 import dayjs from "dayjs";
 import { use } from "react";
 import { useDetailBlog } from "@/hooks/useBlog";
+import DetailHeader from "../_component/DetailHeader";
 
 // 클라이언트 컴포넌트
 export default function Detail({

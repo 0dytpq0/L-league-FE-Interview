@@ -34,7 +34,7 @@ export function useCategories(params: CategoryRequest) {
         `${BASE_URL}/api/v1/category?${queryParams}`,
         {
           method: "GET",
-          // headers: getAuthHeaders(),
+          headers: getAuthHeaders(),
           cache: "no-store",
         }
       );
@@ -132,7 +132,6 @@ export function useBlogList(params: BlogListRequest) {
       const response = await fetch(`${BASE_URL}/api/v1/blog?${queryParams}`, {
         method: "GET",
         headers: getAuthHeaders(),
-
         cache: "no-store",
       });
       if (!response.ok) {

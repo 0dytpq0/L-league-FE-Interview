@@ -106,5 +106,4 @@ export interface BlogUpdateRequest {
   mainImage: File | string | null;
   subImage: File | string | null;
   content: string;
-
 }
