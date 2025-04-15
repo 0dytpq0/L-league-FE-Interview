@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 interface HeaderProps {
@@ -25,7 +26,16 @@ export default function Header({
     >
       <div className="flex items-center gap-5">
         {leftComponent}
-        <span className={cn("font-bold text-xl", titleClassName)}>{title}</span>
+
+        {title === "BLOG" ? (
+          <Link href={"/"} className={cn("font-bold text-xl", titleClassName)}>
+            {title}
+          </Link>
+        ) : (
+          <span className={cn("font-bold text-xl", titleClassName)}>
+            {title}
+          </span>
+        )}
       </div>
       {rightComponent && (
         <div className="flex items-center">{rightComponent}</div>
