@@ -29,7 +29,6 @@ export default function DetailHeader({
               if (isCreated === "created") {
                 window.history.go(-2);
               } else {
-                console.log("123", 123);
                 router.push("/");
               }
             }}

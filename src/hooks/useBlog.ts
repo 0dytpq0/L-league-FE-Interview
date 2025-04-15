@@ -217,15 +217,11 @@ export function useUpdateBlog() {
     }
   >({
     mutationFn: async ({ blog_id, ...formData }) => {
-      // 이미지 업로드 처리
-      console.log("blog_id, formData", blog_id, formData);
-      //이곳에 mainImage, subImage가 File 타입인지 확인 후 아니라면 전달받은 데이터 그대로 유지
       let mainImageUrl = formData.mainImage;
       if (formData.mainImage instanceof File) {
         mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
       }
 
-      // 서브 이미지 처리
       let subImageUrl = null;
 
       if (formData.subImage instanceof File) {
