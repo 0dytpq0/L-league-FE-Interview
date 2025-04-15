@@ -20,7 +20,7 @@ export default function Header({
   return (
     <header
       className={cn(
-        "flex items-center justify-between mx-5 py-5",
+        "flex items-center justify-between mx-5 py-5 tablet:mx-8 tablet:py-6",
         headerClassName
       )}
     >

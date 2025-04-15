@@ -51,7 +51,7 @@ export default function BlogCreateForm() {
     return newCategories;
   }, [categories]);
   return (
-    <div className="flex flex-col gap-6 mx-5">
+    <div className="flex flex-col gap-6 mx-5 tablet:mx-8">
       <Input
         id="title"
         label="타이틀(30자 이내)"
@@ -61,7 +61,7 @@ export default function BlogCreateForm() {
         maxLength={30}
         ref={titleRef}
       />
-      <div className="flex gap-[30px]">
+      <div className="flex gap-[30px] ">
         <ImageUploader
           id="mainImage"
           label="대표사진"
