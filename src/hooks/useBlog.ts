@@ -71,7 +71,6 @@ export function useCreateBlog() {
         subImageUrl = await uploadImageToS3(formData.subImage as File, "sub_");
       }
 
-
       const requestData: BlogCreateRequest = {
         category: formData.category,
         title: formData.title,
@@ -121,11 +120,10 @@ export function useBlogList(params: BlogListRequest) {
     queryFn: async () => {
       const queryParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined || value !== 0) {
+        if (value !== undefined && value !== 0) {
           queryParams.append(key, String(value));
         }
       });
-
       const response = await fetch(`${BASE_URL}/api/v1/blog?${queryParams}`, {
         method: "GET",
         headers: getAuthHeaders(),
@@ -262,4 +260,3 @@ export function useUpdateBlog() {
     },
   });
 }
-
