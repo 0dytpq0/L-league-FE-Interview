@@ -1,7 +1,7 @@
 "use client";
 import Footer from "./_component/Footer";
 import Notice from "./_component/Notice";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import MainHeader from "./_component/MainHeader";
 import { NOTICE_MESSAGE } from "@/constants/message";
 import ImageWrapper from "../_component/ImageWrapper";
@@ -12,6 +12,7 @@ import TopViewsSlider from "./_component/TopViewsSlider";
 import { useRouter, useSearchParams } from "next/navigation";
 import SearchModal from "./_component/SearchModal";
 import Link from "next/link";
+import Loading from "../loading";
 
 export default function Main() {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -20,7 +21,7 @@ export default function Main() {
   const searchParams = useSearchParams();
   const searchTitle = searchParams.get("title");
 
-  const { data: categories, isPending } = useCategories({
+  const { data: categories } = useCategories({
     page: 1,
     page_size: 10,
   });
@@ -31,10 +32,6 @@ export default function Main() {
     ],
     [categories?.data]
   );
-
-  if (isPending) {
-    return <div>로딩중...</div>;
-  }
 
   // 검색 기능 처리
   const handleSearchClick = () => {
@@ -85,7 +82,10 @@ export default function Main() {
         />
       </div>
       {/* 조회수 슬라이드 */}
-      <TopViewsSlider limit={10} />
+      <Suspense fallback={<Loading />}>
+        <TopViewsSlider limit={10} />
+      </Suspense>
+
       {/* 탭  */}
       <TabMenu
         tabs={tabs}
@@ -118,7 +118,6 @@ export default function Main() {
           title={searchTitle || undefined}
         />
       </div>
-
       <Footer />
     </div>
   );

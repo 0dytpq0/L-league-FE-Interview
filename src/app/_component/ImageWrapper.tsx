@@ -9,6 +9,9 @@ interface BaseImageProps {
   containerClassName?: string;
   objectFit?: "contain" | "cover" | "fill" | "none";
   priority?: boolean;
+  sizes?: string;
+  quality?: number;
+  loading?: "lazy" | "eager";
 }
 
 interface LinkImageProps extends BaseImageProps {
@@ -26,6 +29,9 @@ export default function ImageWrapper({ ...props }: ImageWrapperProps) {
     containerClassName,
     objectFit = "contain",
     priority = false,
+    sizes,
+    quality = 75,
+    loading = "lazy",
   } = props;
 
   const ImageComponent = (
@@ -36,6 +42,9 @@ export default function ImageWrapper({ ...props }: ImageWrapperProps) {
         fill
         className={`object-${objectFit} ${imageClassName}`}
         priority={priority}
+        sizes={sizes}
+        quality={quality}
+        loading={loading}
       />
     </div>
   );
