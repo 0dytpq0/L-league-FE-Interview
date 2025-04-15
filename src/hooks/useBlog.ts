@@ -10,6 +10,7 @@ import {
   BlogItem,
   BlogListRequest,
   BlogListResponse,
+  BlogUpdateRequest,
   CategoryRequest,
   CategoryResponse,
 } from "@/types/blog";
@@ -56,24 +57,21 @@ export function useCreateBlog() {
   const queryClient = useQueryClient();
   return useMutation<BlogCreateResponse, Error, BlogFormData>({
     mutationFn: async (formData: BlogFormData) => {
-      // 유효성 검사
       const validationError = validateBlogForm(formData);
       if (validationError) {
         throw new Error(validationError);
       }
 
-      // 이미지 업로드
-      const mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
-
-      // 서브 이미지 처리
+      const mainImageUrl = await uploadImageToS3(
+        formData.mainImage as File,
+        "main_"
+      );
       let subImageUrl = null;
       if (formData.subImage) {
-        subImageUrl = await uploadImageToS3(formData.subImage, "sub_");
+        subImageUrl = await uploadImageToS3(formData.subImage as File, "sub_");
       }
 
-      // 카테고리 ID 찾기
 
-      // API 요청 데이터 준비
       const requestData: BlogCreateRequest = {
         category: formData.category,
         title: formData.title,
@@ -85,7 +83,6 @@ export function useCreateBlog() {
         requestData.sub_image = subImageUrl;
       }
 
-      // 블로그 생성 API 호출
       const response = await fetch(`${BASE_URL}/api/v1/blog`, {
         method: "POST",
         headers: getAuthHeaders(),
@@ -97,12 +94,12 @@ export function useCreateBlog() {
         throw new Error(`API 요청 실패: ${response.status}`);
       }
 
-      return (await response.json()) as BlogCreateResponse;
+      return response.json();
     },
     onSuccess: (res) => {
       alert("블로그가 성공적으로 등록되었습니다!");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
-      router.replace(`/blog/${res.id}`);
+      router.replace(`/blog/${res.id}?created=true`);
     },
     onError: (error) => {
       console.error("블로그 등록 중 오류 발생:", error);
@@ -197,3 +194,72 @@ export function useDetailBlog(blogId: number) {
     },
   });
 }
+/**
+ * 블로그 수정 훅
+ */
+export function useUpdateBlog() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    BlogItem,
+    Error,
+    BlogUpdateRequest & {
+      blog_id: number;
+    }
+  >({
+    mutationFn: async ({ blog_id, ...formData }) => {
+      let mainImageUrl = formData.mainImage;
+      if (formData.mainImage instanceof File) {
+        mainImageUrl = await uploadImageToS3(formData.mainImage, "main_");
+      }
+
+      let subImageUrl = null;
+
+      if (formData.subImage instanceof File) {
+        subImageUrl = await uploadImageToS3(formData.subImage, "sub_");
+      }
+      const requestData: BlogCreateRequest = {
+        category: formData.category,
+        title: formData.title,
+        main_image: mainImageUrl as string,
+        content: formData.content,
+      };
+      if (subImageUrl) {
+        requestData.sub_image = subImageUrl;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/blog/${blog_id}`,
+        {
+          method: "PATCH",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(requestData),
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`블로그 수정 실패: ${response.status}`);
+      }
+
+      return response.json();
+    },
+    onSuccess: (res) => {
+      alert("블로그가 성공적으로 수정되었습니다!");
+      queryClient.invalidateQueries({ queryKey: ["blogList"] });
+      queryClient.invalidateQueries({ queryKey: ["blog", res.id] });
+
+      router.replace(`/blog/${res.id}?updated=true`);
+    },
+    onError: (error) => {
+      console.error("블로그 수정 중 오류 발생:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "블로그 수정 중 오류가 발생했습니다."
+      );
+    },
+  });
+}
+
