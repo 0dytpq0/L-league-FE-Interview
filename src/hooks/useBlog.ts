@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadImageToS3 } from "@/app/(afterLogin)/_utils/awsUpload";
 import { getAuthHeaders } from "@/utils/cookies";
+import { QUERY_KEYS } from "@/constants/queryKeys";
 import {
   BlogCreateRequest,
   BlogCreateResponse,
@@ -23,7 +24,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
  */
 export function useCategories(params: CategoryRequest) {
   return useQuery<CategoryResponse, Error, { id: number; name: string }[]>({
-    queryKey: ["categories", params],
+    queryKey: [QUERY_KEYS.CATEGORIES, params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         page: params.page.toString(),
@@ -49,6 +50,9 @@ export function useCategories(params: CategoryRequest) {
       { id: 0, name: "전체" },
       ...(data?.data.filter((c) => c.id !== 5) || []),
     ],
+    // 카테고리 데이터는 자주 변경되지 않으므로 긴 staleTime 적용
+    staleTime: 10 * 60 * 1000, // 10분
+    gcTime: 30 * 60 * 1000, // 30분
   });
 }
 
@@ -119,9 +123,8 @@ export function useCreateBlog() {
  * 블로그 목록을 조회하는 훅
  */
 export function useBlogList(params: BlogListRequest) {
-  console.log("params", params);
   return useQuery<BlogListResponse>({
-    queryKey: ["blogList", params],
+    queryKey: [QUERY_KEYS.BLOG_LIST, params],
     queryFn: async () => {
       const queryParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
@@ -139,6 +142,11 @@ export function useBlogList(params: BlogListRequest) {
       }
       return response.json();
     },
+    // 블로그 목록은 비교적 자주 업데이트될 수 있으므로 적당한 staleTime 적용
+    staleTime: 3 * 60 * 1000, // 3분
+    gcTime: 10 * 60 * 1000, // 10분
+    // 사용자가 탭을 변경하거나 페이지를 이동할 때마다 최신 데이터 필요
+    refetchOnMount: true,
   });
 }
 
