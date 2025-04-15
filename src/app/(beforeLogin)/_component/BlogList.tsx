@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { BlogItem, BlogListRequest, BlogListResponse } from "@/types/blog";
+import { useState } from "react";
+import { BlogItem, BlogListRequest } from "@/types/blog";
 import { useBlogList } from "@/hooks/useBlog";
 import BlogListItem from "./BlogListItem";
 import Pagination from "./Pagination";
+import { useSearchParams } from "next/navigation";
 
 interface BlogListProps {
-  initialBlogList?: BlogListResponse;
-  selectedTab?: number;
-  tabs?: { id: number; name: string }[];
   pageSize?: number;
   onPageChange?: (page: number) => void;
   title?: string; // 검색어 추가
@@ -19,11 +17,8 @@ interface BlogListProps {
  * 블로그 목록 컴포넌트 - 블로그 데이터를 받아 목록으로 표시
  */
 export default function BlogList({
-  selectedTab = 0,
-  tabs = [],
   pageSize = 10,
   onPageChange,
-  title,
 }: BlogListProps) {
   // 페이지 상태 관리
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,7 +28,9 @@ export default function BlogList({
     page: currentPage,
     page_size: pageSize,
   };
-
+  const searchParams = useSearchParams();
+  const selectedTab = Number(searchParams.get("tab") || 0);
+  const title = searchParams.get("title");
   // 카테고리 필터링
   if (selectedTab !== undefined && selectedTab !== 0) {
     params.category_id = selectedTab;
@@ -54,27 +51,6 @@ export default function BlogList({
     }
   };
 
-  const filteredBlogList = useMemo(() => {
-    if (!blogList?.data || blogList.data.length === 0) {
-      return blogList;
-    }
-
-    const selectedTabId = tabs[selectedTab]?.id;
-    if (selectedTabId === 0) {
-      return blogList;
-    }
-
-    const filtered = blogList.data.filter(
-      (blog: BlogItem) => blog.category.id === selectedTabId
-    );
-
-    return {
-      ...blogList,
-      count: filtered.length,
-      data: filtered,
-    };
-  }, [blogList, selectedTab, tabs]);
-
   if (isLoading) {
     return (
       <div className="w-full mt-[38px] flex justify-center">
@@ -83,7 +59,7 @@ export default function BlogList({
     );
   }
 
-  if (!filteredBlogList?.data || filteredBlogList.data.length === 0) {
+  if (!blogList?.data || blogList.data.length === 0) {
     return (
       <div className="w-full mt-[38px] flex flex-col gap-[26px]">
         <p className="text-center text-gray-500">
@@ -96,15 +72,15 @@ export default function BlogList({
   }
 
   return (
-    <div className="w-full">
+    <div className="relative pb-16 mx-3 tablet:mx-7 ">
       <div className="scroll-hide w-full mt-[38px] flex flex-col gap-[26px] max-h-[400px] overflow-y-auto">
-        {filteredBlogList.data.map((blog: BlogItem) => (
+        {blogList.data.map((blog: BlogItem) => (
           <BlogListItem key={blog.id} blog={blog} />
         ))}
       </div>
       <Pagination
         currentPage={currentPage}
-        totalPages={filteredBlogList.pageCnt || 1}
+        totalPages={blogList.pageCnt || 1}
         onPageChange={handlePageChange}
       />
     </div>

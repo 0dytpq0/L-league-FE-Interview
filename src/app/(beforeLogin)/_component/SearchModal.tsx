@@ -58,7 +58,7 @@ export default function SearchModal({
       ></div>
       <div className="fixed inset-0 m-auto flex items-center justify-center z-30">
         <div
-          className="bg-white rounded-lg w-[350px] h-[200px] p-5 shadow-lg"
+          className="bg-white rounded-lg w-[350px] tablet:w-[450px] desktop:w-[550px] h-[200px] p-5 shadow-lg"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-end items-center mb-4">
@@ -70,7 +70,7 @@ export default function SearchModal({
               <ImageWrapper
                 src="/icon_close.svg"
                 alt="close"
-                containerClassName="w-4 h-4 bg-transparent rounded-full cursor-pointer"
+                containerClassName="w-4 h-4 tablet:w-6 tablet:h-6 bg-transparent rounded-full cursor-pointer"
                 objectFit="contain"
               />
             </button>

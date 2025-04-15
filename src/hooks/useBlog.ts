@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadImageToS3 } from "@/app/(afterLogin)/_utils/awsUpload";
 import { getAuthHeaders } from "@/utils/cookies";
+import { QUERY_KEYS } from "@/constants/queryKeys";
 import {
   BlogCreateRequest,
   BlogCreateResponse,
@@ -22,8 +23,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
  * 카테고리 목록을 조회하는 훅
  */
 export function useCategories(params: CategoryRequest) {
-  return useQuery<CategoryResponse>({
-    queryKey: ["categories", params],
+  return useQuery<CategoryResponse, Error, { id: number; name: string }[]>({
+    queryKey: [QUERY_KEYS.CATEGORIES, params],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         page: params.page.toString(),
@@ -45,6 +46,12 @@ export function useCategories(params: CategoryRequest) {
 
       return response.json();
     },
+    select: (data) => [
+      { id: 0, name: "전체" },
+      ...(data?.data.filter((c) => c.id !== 5) || []),
+    ],
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 }
 
@@ -116,7 +123,7 @@ export function useCreateBlog() {
  */
 export function useBlogList(params: BlogListRequest) {
   return useQuery<BlogListResponse>({
-    queryKey: ["blogList", params],
+    queryKey: [QUERY_KEYS.BLOG_LIST, params],
     queryFn: async () => {
       const queryParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
@@ -127,7 +134,6 @@ export function useBlogList(params: BlogListRequest) {
       const response = await fetch(`${BASE_URL}/api/v1/blog?${queryParams}`, {
         method: "GET",
         headers: getAuthHeaders(),
-
         cache: "no-store",
       });
       if (!response.ok) {
@@ -135,6 +141,9 @@ export function useBlogList(params: BlogListRequest) {
       }
       return response.json();
     },
+    staleTime: 3 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    refetchOnMount: true,
   });
 }
 

@@ -30,14 +30,12 @@ export default function MoreButton({ id, onDelete }: MoreButtonProps) {
     setIsOpen(false);
   };
 
-  // 외부 클릭 시 메뉴 닫기
   const handleClickOutside = useCallback(() => {
     if (isOpen) {
       setIsOpen(false);
     }
   }, [isOpen]);
 
-  // 컴포넌트 마운트 시 이벤트 리스너 등록, 언마운트 시 제거
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -51,7 +49,8 @@ export default function MoreButton({ id, onDelete }: MoreButtonProps) {
         <ImageWrapper
           src="/icon_more.svg"
           alt="more"
-          containerClassName="relative aspect-auto w-4 h-4 mr-1"
+          containerClassName="relative aspect-auto w-4 h-4 tablet:h-6 w-6 mr-1"
+          sizes="(max-width: 768px) 16px, 24px"
           objectFit="cover"
         />
       </button>
