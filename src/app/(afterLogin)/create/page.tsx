@@ -9,25 +9,9 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/constants/queryKeys";
-import { CategoryRequest } from "@/types/blog";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
-export async function getCategories(params: CategoryRequest) {
-  const response = await fetch(
-    `${
-      process.env.API_URL
-    }/api/v1/category?page=${params.page.toString()}&page_size=${params.page_size.toString()}`,
-    {
-      method: "GET",
-      cache: "no-store",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("카테고리 데이터 패칭 실패");
-  }
-  return response.json();
-}
+import { getCategories } from "@/services/getCategories";
 
 export default async function Create() {
   const queryClient = new QueryClient();

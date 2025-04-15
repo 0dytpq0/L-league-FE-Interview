@@ -113,7 +113,7 @@ export default function ImageUploader({
               <ImageWrapper
                 src="/icon_close.svg"
                 alt="close"
-                containerClassName="w-4 h-4 bg-transparent rounded-full"
+                containerClassName="w-4 h-4 bg-transparent rounded-full tablet:w-6 tablet:h-6"
                 objectFit="contain"
               />
             </div>
