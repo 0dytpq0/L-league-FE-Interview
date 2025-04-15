@@ -69,18 +69,18 @@ export default function Main() {
       />
 
       {/* 조회수 TOP 10 */}
-      <div className="flex items-center gap-1 py-[10px] mx-3">
+      <div className="flex items-center gap-1 py-[10px] mx-3 tablet:mx-7">
         <ImageWrapper
           src={"/icon_rank.svg"}
           alt="rank"
-          containerClassName="relative aspect-auto w-[25px] h-6 mr-1"
+          containerClassName="relative aspect-auto w-6 h-6 tablet:w-7 tablet:h-7 mr-1"
           objectFit="cover"
         />
-        <span className="text-xl font-bold">조회수 TOP 10</span>
+        <span className="text-xl font-bold tablet:text-2xl">조회수 TOP 10</span>
         <ImageWrapper
           src={"/icon_next.svg"}
           alt="next"
-          containerClassName="relative aspect-auto w-5 h-6 mt-[1px]"
+          containerClassName="relative aspect-auto w-6 h-6 mt-[1px] tablet:w-7 tablet:h-7"
           objectFit="cover"
         />
       </div>
