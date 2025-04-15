@@ -23,8 +23,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
  * 카테고리 목록을 조회하는 훅
  */
 export function useCategories(params: CategoryRequest) {
+  // queryKey를 정확히 일치시키기 위해 파라미터를 새 객체로 바꾸지 않고 원시 값을 사용
   return useQuery<CategoryResponse, Error, { id: number; name: string }[]>({
-    queryKey: [QUERY_KEYS.CATEGORIES, params],
+    queryKey: [QUERY_KEYS.CATEGORIES, { page: params.page, page_size: params.page_size }],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         page: params.page.toString(),

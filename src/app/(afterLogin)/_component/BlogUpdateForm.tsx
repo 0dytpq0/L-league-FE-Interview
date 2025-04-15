@@ -9,7 +9,8 @@ import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
 import { useBlogForm } from "../_hooks/useBlogForm";
 import { useBackConfirm } from "../_hooks/useBackConfirm";
 import { useCategories, useDetailBlog } from "@/hooks/useBlog";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import Loading from "@/app/loading";
 
 interface BlogUpdateFormProps {
   blogId: number;
@@ -34,10 +35,30 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
   });
   const { data: blog, isLoading } = useDetailBlog(Number(blogId));
   useBackConfirm();
+
   const { data: categories } = useCategories({
     page: 1,
     page_size: 10,
   });
+
+  const categoryList = useMemo(() => {
+    const newCategories: { id: number; name: string }[] = [];
+    categories?.forEach((category, idx) => {
+      if (category.id !== 0) {
+        newCategories.push({
+          id: category.id,
+          name: category.name,
+        });
+        if (idx === categories.length - 1) {
+          newCategories.push({
+            id: 5,
+            name: "기타",
+          });
+        }
+      }
+    });
+    return newCategories;
+  }, [categories]);
   useEffect(() => {
     handleCategoryChange(blog?.category.id || 0);
     handleMainImageChange(blog?.main_image as string);
@@ -50,11 +71,7 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
   };
 
   if (isLoading) {
-    return (
-      <div className="w-full mt-[38px] flex justify-center">
-        <p className="text-center text-gray-500">로딩중...</p>
-      </div>
-    );
+    return <Loading text="블로그 정보 로딩 중..." />;
   }
 
   return (
@@ -89,7 +106,7 @@ export default function BlogUpdateForm({ blogId }: BlogUpdateFormProps) {
       <SelectBox
         id="category"
         label="카테고리"
-        options={categories?.data || []}
+        options={categoryList || []}
         selectedOption={selectedCategory}
         onChange={handleCategoryChange}
         required

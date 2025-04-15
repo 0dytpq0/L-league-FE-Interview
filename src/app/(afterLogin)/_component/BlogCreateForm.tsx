@@ -9,6 +9,7 @@ import ImageUploader from "@/app/(afterLogin)/_component/ImageUploader";
 import { useBlogForm } from "../_hooks/useBlogForm";
 import { useBackConfirm } from "../_hooks/useBackConfirm";
 import { useCategories } from "@/hooks/useBlog";
+import { useMemo } from "react";
 
 export default function BlogCreateForm() {
   const {
@@ -31,8 +32,26 @@ export default function BlogCreateForm() {
     page_size: 10,
   });
 
+  const categoryList = useMemo(() => {
+    const newCategories: { id: number; name: string }[] = [];
+    categories?.forEach((category, idx) => {
+      if (category.id !== 0) {
+        newCategories.push({
+          id: category.id,
+          name: category.name,
+        });
+        if (idx === categories.length - 1) {
+          newCategories.push({
+            id: 5,
+            name: "기타",
+          });
+        }
+      }
+    });
+    return newCategories;
+  }, [categories]);
   return (
-    <div className="flex flex-col gap-6 mx-5">
+    <div className="flex flex-col gap-6 mx-5 tablet:mx-8">
       <Input
         id="title"
         label="타이틀(30자 이내)"
@@ -42,7 +61,7 @@ export default function BlogCreateForm() {
         maxLength={30}
         ref={titleRef}
       />
-      <div className="flex gap-[30px]">
+      <div className="flex gap-[30px] ">
         <ImageUploader
           id="mainImage"
           label="대표사진"
@@ -60,7 +79,7 @@ export default function BlogCreateForm() {
       <SelectBox
         id="category"
         label="카테고리"
-        options={categories?.data || []}
+        options={categoryList || []}
         selectedOption={selectedCategory}
         onChange={handleCategoryChange}
         required

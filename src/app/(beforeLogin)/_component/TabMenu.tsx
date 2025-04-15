@@ -9,7 +9,6 @@ export default function TabMenu() {
     page: 1,
     page_size: 10,
   });
-  console.log("tabs", tabs);
   const handleTabChange = (selectedTabId: number) => {
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set("tab", selectedTabId.toString());

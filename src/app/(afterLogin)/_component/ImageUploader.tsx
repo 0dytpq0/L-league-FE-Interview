@@ -71,18 +71,7 @@ export default function ImageUploader({
 
   return (
     <div className={`flex flex-col items-center gap-2 ${containerClassName}`}>
-      <div
-        className="w-full h-[100px] bg-input rounded-lg flex items-center justify-center overflow-hidden"
-        style={
-          preview
-            ? {
-                backgroundImage: `url("${preview}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-            : {}
-        }
-      >
+      <div className="w-full h-[150px] tablet:h-[250px] bg-input rounded-lg flex items-center justify-center overflow-hidden">
         <input
           type="file"
           id={id}
@@ -105,6 +94,15 @@ export default function ImageUploader({
           </div>
         ) : (
           <div onClick={handleImageClick} className="w-full h-full relative">
+            <ImageWrapper
+              src={preview}
+              alt={id}
+              containerClassName="w-full h-full"
+              sizes="(max-width: 768px) 150px, 250px"
+              objectFit="contain"
+              priority={true}
+              loading="eager"
+            />
             <div
               className="absolute top-2 right-2 z-10 cursor-pointer"
               onClick={(e) => {
@@ -115,7 +113,7 @@ export default function ImageUploader({
               <ImageWrapper
                 src="/icon_close.svg"
                 alt="close"
-                containerClassName="w-4 h-4 bg-transparent rounded-full"
+                containerClassName="w-4 h-4 bg-transparent rounded-full tablet:w-6 tablet:h-6"
                 objectFit="contain"
               />
             </div>
