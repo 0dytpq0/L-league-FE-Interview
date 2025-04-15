@@ -50,9 +50,8 @@ export function useCategories(params: CategoryRequest) {
       { id: 0, name: "전체" },
       ...(data?.data.filter((c) => c.id !== 5) || []),
     ],
-    // 카테고리 데이터는 자주 변경되지 않으므로 긴 staleTime 적용
-    staleTime: 10 * 60 * 1000, // 10분
-    gcTime: 30 * 60 * 1000, // 30분
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 }
 
@@ -142,10 +141,8 @@ export function useBlogList(params: BlogListRequest) {
       }
       return response.json();
     },
-    // 블로그 목록은 비교적 자주 업데이트될 수 있으므로 적당한 staleTime 적용
-    staleTime: 3 * 60 * 1000, // 3분
-    gcTime: 10 * 60 * 1000, // 10분
-    // 사용자가 탭을 변경하거나 페이지를 이동할 때마다 최신 데이터 필요
+    staleTime: 3 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
     refetchOnMount: true,
   });
 }
