@@ -17,6 +17,8 @@ import {
 } from "@/types/blog";
 import { validateBlogForm } from "@/app/(afterLogin)/_utils/validateBlog";
 import { useRouter } from "next/navigation";
+import { getBlogDetail } from "@/services/getBlogDetail";
+import getBlogList from "@/services/getBlogList";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 /**
@@ -25,7 +27,10 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export function useCategories(params: CategoryRequest) {
   // queryKey를 정확히 일치시키기 위해 파라미터를 새 객체로 바꾸지 않고 원시 값을 사용
   return useQuery<CategoryResponse, Error, { id: number; name: string }[]>({
-    queryKey: [QUERY_KEYS.CATEGORIES, { page: params.page, page_size: params.page_size }],
+    queryKey: [
+      QUERY_KEYS.CATEGORIES,
+      { page: params.page, page_size: params.page_size },
+    ],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         page: params.page.toString(),
@@ -125,23 +130,7 @@ export function useCreateBlog() {
 export function useBlogList(params: BlogListRequest) {
   return useQuery<BlogListResponse>({
     queryKey: [QUERY_KEYS.BLOG_LIST, params],
-    queryFn: async () => {
-      const queryParams = new URLSearchParams();
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== 0) {
-          queryParams.append(key, String(value));
-        }
-      });
-      const response = await fetch(`${BASE_URL}/api/v1/blog?${queryParams}`, {
-        method: "GET",
-        headers: getAuthHeaders(),
-        cache: "no-store",
-      });
-      if (!response.ok) {
-        throw new Error("블로그 목록 조회에 실패했습니다");
-      }
-      return response.json();
-    },
+    queryFn: async () => await getBlogList(params),
     staleTime: 3 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
     refetchOnMount: true,
@@ -184,22 +173,10 @@ export function useDeleteBlog() {
 /**
  * 상세 블로그 조회 훅
  */
-export function useDetailBlog(blogId: number) {
+export function useDetailBlog(blogId: string) {
   return useQuery<BlogItem>({
-    queryKey: ["blog", blogId],
-    queryFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/blog/${blogId}`,
-        {
-          headers: getAuthHeaders(),
-          cache: "no-store",
-        }
-      );
-      if (!response.ok) {
-        throw new Error("블로그 상세 정보 조회에 실패했습니다");
-      }
-      return response.json();
-    },
+    queryKey: [QUERY_KEYS.BLOG_DETAIL, blogId],
+    queryFn: async () => await getBlogDetail(blogId),
   });
 }
 /**

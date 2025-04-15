@@ -14,18 +14,40 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { CategoryResponse } from "@/types/blog";
+import {
+  BlogListRequest,
+  BlogListResponse,
+  CategoryResponse,
+} from "@/types/blog";
 import { QUERY_KEYS } from "@/constants/queryKeys";
+import getBlogList from "@/services/getBlogList";
 
-// // 메타데이터 생성 함수
-// export async function generateMetadata({ params }: Props) {
-//   const title = params.title ? `"${params.title}" 검색 결과 - BLOG` : "BLOG";
+// 메타데이터 생성 함수
+export async function generateMetadata({ params }: Props) {
+  const title = params.title ? `"${params.title}" 검색 결과` : "L-League Blog";
 
-//   return {
-//     title,
-//     description: "L-league 블로그에 오신 것을 환영합니다.",
-//   };
-// }
+  return {
+    title,
+    description: "L-League 블로그에서 다양한 카테고리의 이야기를 만나보세요.",
+    alternates: {
+      canonical: "/",
+      languages: {
+        "ko-KR": "/ko",
+        "en-US": "/en",
+      },
+    },
+    openGraph: {
+      images: [
+        {
+          url: "/og-home.png",
+          width: 1200,
+          height: 630,
+          alt: "L-League Blog 메인 이미지",
+        },
+      ],
+    },
+  };
+}
 
 interface Props {
   params: {
@@ -51,6 +73,7 @@ export async function getCategories() {
 }
 
 export default async function Main({ params }: Props) {
+  const { title } = params;
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery<
     CategoryResponse,
@@ -60,8 +83,12 @@ export default async function Main({ params }: Props) {
     queryKey: [QUERY_KEYS.CATEGORIES, { page: 1, page_size: 10 }],
     queryFn: getCategories,
   });
+  await queryClient.prefetchQuery<BlogListResponse, Error, BlogListRequest>({
+    queryKey: [QUERY_KEYS.BLOG_LIST, { page: 1, page_size: 10 }],
+    queryFn: async () => await getBlogList({ page: 1, page_size: 10 }),
+  });
   const dehydratedState = dehydrate(queryClient);
-  const searchTitle = params.title;
+  const searchTitle = title;
 
   return (
     <div className="relative">
@@ -92,33 +119,33 @@ export default async function Main({ params }: Props) {
         />
       </div>
       {/* 조회수 슬라이드 */}
-      <Suspense fallback={<Loading />}>
-        <TopViewsSlider limit={10} />
-      </Suspense>
       <HydrationBoundary state={dehydratedState}>
+        <Suspense fallback={<Loading />}>
+          <TopViewsSlider limit={10} />
+        </Suspense>
         <TabMenu />
-      </HydrationBoundary>
 
-      {searchTitle && (
-        <div className="flex items-center justify-between mx-3 mt-4 p-3 bg-blue-50 rounded-lg">
-          <div className="text-blue-700 font-medium flex items-center">
-            <ImageWrapper
-              src="/icon_search.svg"
-              alt="search"
-              containerClassName="w-5 h-5 mr-2"
-              objectFit="contain"
-            />
-            <span>{`"${searchTitle}" 검색 결과`}</span>
+        {searchTitle && (
+          <div className="flex items-center justify-between mx-3 mt-4 p-3 bg-blue-50 rounded-lg">
+            <div className="text-blue-700 font-medium flex items-center">
+              <ImageWrapper
+                src="/icon_search.svg"
+                alt="search"
+                containerClassName="w-5 h-5 mr-2"
+                objectFit="contain"
+              />
+              <span>{`"${searchTitle}" 검색 결과`}</span>
+            </div>
+            <Link href={`/`} className="text-blue-700 font-bold">
+              전체보기
+            </Link>
           </div>
-          <Link href={`/`} className="text-blue-700 font-bold">
-            전체보기
-          </Link>
-        </div>
-      )}
+        )}
 
-      <Suspense fallback={<Loading />}>
-        <BlogList pageSize={10} title={searchTitle} />
-      </Suspense>
+        <Suspense fallback={<Loading />}>
+          <BlogList pageSize={10} title={searchTitle} />
+        </Suspense>
+      </HydrationBoundary>
       <Footer />
     </div>
   );

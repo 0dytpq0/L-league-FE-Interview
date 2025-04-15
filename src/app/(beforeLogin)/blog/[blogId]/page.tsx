@@ -1,65 +1,85 @@
-"use client";
+"use server";
+import DetailForm from "../_component/DetailForm";
+import { QUERY_KEYS } from "@/constants/queryKeys";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { Metadata, ResolvingMetadata } from "next";
+import { getBlogDetail } from "@/services/getBlogDetail";
 
-import ImageWrapper from "@/app/_component/ImageWrapper";
-import dayjs from "dayjs";
-import { use } from "react";
-import { useDetailBlog } from "@/hooks/useBlog";
-import DetailHeader from "../_component/DetailHeader";
+interface Props {
+  params: { blogId: string; isCreated: string };
+}
 
-// 클라이언트 컴포넌트
-export default function Detail({
-  params,
-}: {
-  params: Promise<{ blogId: string }>;
-}) {
-  // React.use()로 params 래핑하여 사용
-  const { blogId } = use(params);
+// 동적 메타데이터 생성
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { blogId } = await params;
 
-  const isCreated = new URLSearchParams(window.location.search).get("created");
+  // 부모 메타데이터 가져오기
+  const previousImages = (await parent).openGraph?.images || [];
 
-  const { data: blog, isLoading } = useDetailBlog(Number(blogId));
-  if (isLoading) {
-    return <div className="flex justify-center p-10">로딩 중...</div>;
-  }
+  // 블로그 데이터 가져오기
+  const blog = await getBlogDetail(blogId);
+
   if (!blog) {
-    return (
-      <div className="flex justify-center p-10">
-        블로그 정보를 찾을 수 없습니다.
-      </div>
-    );
+    return {
+      title: "블로그 글을 찾을 수 없습니다",
+      description: "요청하신 블로그 글을 찾을 수 없습니다.",
+    };
   }
+
+  // 설명 텍스트 생성 (내용의 첫 100자)
+  const description =
+    blog.content?.substring(0, 100) + (blog.content?.length > 100 ? "..." : "");
+
+  return {
+    title: blog.title,
+    description,
+    openGraph: {
+      title: blog.title,
+      description,
+      type: "article",
+      publishedTime: blog.created_at,
+      modifiedTime: blog.updated_at,
+      authors: ["L-League"],
+      images: blog.main_image
+        ? [
+            {
+              url: blog.main_image,
+              width: 1200,
+              height: 630,
+              alt: blog.title,
+            },
+            ...previousImages,
+          ]
+        : previousImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description,
+      images: blog.main_image ? [blog.main_image] : [],
+    },
+  };
+}
+
+export default async function Detail({ params }: Props) {
+  const queryClient = new QueryClient();
+  const { blogId, isCreated } = await params;
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.BLOG_DETAIL, blogId],
+    queryFn: () => getBlogDetail(blogId),
+  });
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <>
-      <DetailHeader title={blog.title} blogId={blog.id} isCreated={isCreated} />
-
-      <div className="flex flex-col gap-4 mx-5">
-        <div className="w-full h-[210px] rounded-lg mx-[2px] overflow-hidden">
-          <ImageWrapper
-            src={blog.main_image || "엠프티 이미지"}
-            alt={blog.title || "게시글 이미지"}
-            containerClassName="w-full h-full relative"
-            objectFit="cover"
-            imageClassName="rounded-lg"
-          />
-        </div>
-        <span className="text-gray text-[12.7px]">
-          작성일시: {dayjs(blog.created_at).format("YYYY.MM.DD HH:mm")}
-        </span>
-        <p className="text-gray font-bold text-[12.7px]">{blog.content}</p>
-        {/* {blog.sub_image && (
-
-          <div className="w-full rounded-lg mx-[2px] mt-4 overflow-hidden">
-            <ImageWrapper
-              src={blog.sub_image}
-              alt="서브 이미지"
-              containerClassName="w-full h-[210px] relative"
-              objectFit="cover"
-              imageClassName="rounded-lg"
-            />
-          </div>
-        )} */}
-      </div>
-    </>
+    <HydrationBoundary state={dehydratedState}>
+      <DetailForm blogId={blogId} isCreated={isCreated} />
+    </HydrationBoundary>
   );
 }
