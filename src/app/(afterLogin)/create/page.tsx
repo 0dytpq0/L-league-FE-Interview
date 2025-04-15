@@ -12,6 +12,17 @@ import { QUERY_KEYS } from "@/constants/queryKeys";
 import { Suspense } from "react";
 import Loading from "@/app/loading";
 import { getCategories } from "@/services/getCategories";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: '새 글 작성',
+  description: 'L-League 블로그에 새로운 글을 작성해보세요.',
+  openGraph: {
+    title: '새 글 작성 - L-League Blog',
+    description: '다양한 주제로 당신의 이야기를 공유해보세요.',
+    images: ['/og-create.png'],
+  },
+};
 
 export default async function Create() {
   const queryClient = new QueryClient();

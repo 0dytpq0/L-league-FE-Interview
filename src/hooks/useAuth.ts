@@ -27,7 +27,7 @@ export function useMe() {
     queryFn: async () => {
       const response = await fetch(`${BASE_URL}/api/v1/auth/me`, {
         method: "GET",
-        headers: getAuthHeaders(), // 쿠키에서 토큰을 가져와 인증 헤더 생성
+        headers: getAuthHeaders(),
         cache: "no-store",
       });
 
