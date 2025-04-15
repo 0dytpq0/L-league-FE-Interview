@@ -33,24 +33,24 @@ export default function BlogListItem({ blog }: BlogListItemProps) {
         alt="mainImage"
         href={`/blog/${id}`}
         imageClassName="rounded-lg"
-        containerClassName="relative aspect-auto w-[120px] h-[120px] tablet:w-[180px] tablet:h-[180px]"
-        sizes="(max-width: 768px) 120px, 180px"
+        containerClassName="relative aspect-auto w-[120px] h-[120px] tablet:w-[160px] tablet:h-[160px]"
+        sizes="(max-width: 768px) 120px, 160px"
         objectFit="contain"
       />
       <div className="flex flex-col justify-between flex-1 gap-[6px]">
         <div className="flex w-full justify-between items-center">
           <Link
             href={`/blog/${id}`}
-            className="text-[15.4px] tablet:text-xl font-bold"
+            className="text-[15.4px] tablet:text-[17.4px] font-bold"
           >
             {title}
           </Link>
           <MoreButton id={id || 1} onDelete={handleDelete} />
         </div>
-        <p className="text-[13px] tablet:text-[15px] flex-1 text-[#A8A8A8] font-bold line-clamp-3 tablet:line-clamp-5">
+        <p className="text-[13px] tablet:text-[15px] flex-1 text-[#A8A8A8] font-bold line-clamp-3 tablet:line-clamp-4">
           {content}
         </p>
-        <span className="text-[3px] tablet:text-[15px] text-[#A8A8A8] font-bold">
+        <span className="text-[13px] tablet:text-[15px] text-[#A8A8A8] font-bold">
           작성일시 : {dayjs(created_at).format("YYYY.MM.DD HH:mm")}
         </span>
       </div>
