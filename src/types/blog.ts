@@ -99,3 +99,11 @@ export interface BlogListResponse {
   previousPage: number;
   data: BlogItem[];
 }
+
+export interface BlogUpdateRequest {
+  category: number;
+  title: string;
+  mainImage: File | string | null;
+  subImage: File | string | null;
+  content: string;
+}

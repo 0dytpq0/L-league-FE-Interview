@@ -7,7 +7,7 @@ import Notice from "@/app/(beforeLogin)/_component/Notice";
 import { use } from "react";
 import BlogUpdateForm from "../../_component/BlogUpdateForm";
 
-export default function Create({
+export default function Update({
   params,
 }: {
   params: Promise<{ blogId: string }>;

@@ -106,7 +106,7 @@ export function useCreateBlog() {
     onSuccess: (res) => {
       alert("블로그가 성공적으로 등록되었습니다!");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
-      router.replace(`/blog/${res.id}`);
+      router.replace(`/blog/${res.id}?created=true`);
     },
     onError: (error) => {
       console.error("블로그 등록 중 오류 발생:", error);
@@ -257,11 +257,12 @@ export function useUpdateBlog() {
 
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: (res) => {
       alert("블로그가 성공적으로 수정되었습니다!");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
-      queryClient.invalidateQueries({ queryKey: ["blog", data.id] });
-      router.push(`/blog/${data.id}`);
+      queryClient.invalidateQueries({ queryKey: ["blog", res.id] });
+
+      router.replace(`/blog/${res.id}?updated=true`);
     },
     onError: (error) => {
       console.error("블로그 수정 중 오류 발생:", error);
