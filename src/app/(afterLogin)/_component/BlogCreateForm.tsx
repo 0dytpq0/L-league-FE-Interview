@@ -31,6 +31,7 @@ export default function BlogCreateForm() {
     page: 1,
     page_size: 10,
   });
+
   const categoryList = useMemo(() => {
     const newCategories: { id: number; name: string }[] = [];
     categories?.forEach((category, idx) => {

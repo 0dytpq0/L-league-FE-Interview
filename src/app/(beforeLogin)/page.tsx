@@ -15,6 +15,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { CategoryResponse } from "@/types/blog";
+import { QUERY_KEYS } from "@/constants/queryKeys";
 
 // // 메타데이터 생성 함수
 // export async function generateMetadata({ params }: Props) {
@@ -56,7 +57,7 @@ export default async function Main({ params }: Props) {
     Error,
     { id: number; name: string }[]
   >({
-    queryKey: ["categories"],
+    queryKey: [QUERY_KEYS.CATEGORIES, { page: 1, page_size: 10 }],
     queryFn: getCategories,
   });
   const dehydratedState = dehydrate(queryClient);
