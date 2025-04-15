@@ -24,6 +24,7 @@ export function useBlogForm({
   const { mutate: updateBlog, isPending: isUpdatePending } = useUpdateBlog();
   const isPending = isUpdate ? isUpdatePending : isCreatePending;
   const handleMainImageChange = (file: File | string | null) => {
+
     setMainImage(file);
   };
 
@@ -57,6 +58,7 @@ export function useBlogForm({
     };
 
     const validationError = validateBlogForm(formData, isUpdate);
+
     if (validationError) {
       alert(validationError);
       return;

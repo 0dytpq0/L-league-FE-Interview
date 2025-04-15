@@ -16,6 +16,7 @@ export default function Detail({
   const { blogId } = use(params);
 
   const isCreated = new URLSearchParams(window.location.search).get("created");
+
   const { data: blog, isLoading } = useDetailBlog(Number(blogId));
   if (isLoading) {
     return <div className="flex justify-center p-10">로딩 중...</div>;
@@ -31,6 +32,7 @@ export default function Detail({
   return (
     <>
       <DetailHeader title={blog.title} blogId={blog.id} isCreated={isCreated} />
+
       <div className="flex flex-col gap-4 mx-5">
         <div className="w-full h-[210px] rounded-lg mx-[2px] overflow-hidden">
           <ImageWrapper
@@ -46,6 +48,7 @@ export default function Detail({
         </span>
         <p className="text-gray font-bold text-[12.7px]">{blog.content}</p>
         {/* {blog.sub_image && (
+
           <div className="w-full rounded-lg mx-[2px] mt-4 overflow-hidden">
             <ImageWrapper
               src={blog.sub_image}

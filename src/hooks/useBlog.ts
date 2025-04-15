@@ -57,27 +57,21 @@ export function useCreateBlog() {
   const queryClient = useQueryClient();
   return useMutation<BlogCreateResponse, Error, BlogFormData>({
     mutationFn: async (formData: BlogFormData) => {
-      // 유효성 검사
       const validationError = validateBlogForm(formData);
       if (validationError) {
         throw new Error(validationError);
       }
 
-      // 이미지 업로드
       const mainImageUrl = await uploadImageToS3(
         formData.mainImage as File,
         "main_"
       );
-
-      // 서브 이미지 처리
       let subImageUrl = null;
       if (formData.subImage) {
         subImageUrl = await uploadImageToS3(formData.subImage as File, "sub_");
       }
 
-      // 카테고리 ID 찾기
 
-      // API 요청 데이터 준비
       const requestData: BlogCreateRequest = {
         category: formData.category,
         title: formData.title,
@@ -89,7 +83,6 @@ export function useCreateBlog() {
         requestData.sub_image = subImageUrl;
       }
 
-      // 블로그 생성 API 호출
       const response = await fetch(`${BASE_URL}/api/v1/blog`, {
         method: "POST",
         headers: getAuthHeaders(),
@@ -201,7 +194,6 @@ export function useDetailBlog(blogId: number) {
     },
   });
 }
-
 /**
  * 블로그 수정 훅
  */
@@ -270,3 +262,4 @@ export function useUpdateBlog() {
     },
   });
 }
+

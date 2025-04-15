@@ -1,9 +1,8 @@
-"use client";
-
 import Header from "@/app/_component/Header";
 import BackButton from "@/app/_component/BackButton";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 
 interface DetailHeaderProps {
   title: string;
@@ -19,6 +18,7 @@ export default function DetailHeader({
   isCreated,
 }: DetailHeaderProps) {
   const router = useRouter();
+
   return (
     <Header
       title={title}
